@@ -19,10 +19,29 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
 
   if (!res.ok) {
     const body = await res.json().catch(() => ({}));
+    if (res.status === 401) handleExpiredSession(path);
     throw new ApiError(res.status, body.message ?? res.statusText);
   }
   if (res.status === 204) return undefined as T;
   return res.json();
+}
+
+const REDIRECT_FLAG = 'nt_auth_redirect';
+
+function handleExpiredSession(path: string) {
+  if (typeof window === 'undefined' || path.startsWith('/auth/')) return;
+  if (window.location.pathname === '/login') return;
+  if (sessionStorage.getItem(REDIRECT_FLAG)) return;
+  sessionStorage.setItem(REDIRECT_FLAG, '1');
+
+  fetch(`${API_URL}/auth/logout`, {
+    method: 'POST',
+    credentials: 'include',
+  }).finally(() => window.location.assign('/login'));
+}
+
+export function clearAuthRedirectFlag() {
+  if (typeof window !== 'undefined') sessionStorage.removeItem(REDIRECT_FLAG);
 }
 
 export const api = {

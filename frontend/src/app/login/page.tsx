@@ -1,13 +1,14 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { authApi } from '@/lib/queries';
-import { ApiError } from '@/lib/api';
+import { ApiError, clearAuthRedirectFlag } from '@/lib/api';
 import { Icons } from '@/components/atoms/Icons';
 
 export default function LoginPage() {
   const router = useRouter();
+  useEffect(() => clearAuthRedirectFlag(), []);
   const [email, setEmail] = useState('demo@nodotech.io');
   const [password, setPassword] = useState('demo12345');
   const [error, setError] = useState('');

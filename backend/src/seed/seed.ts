@@ -16,6 +16,16 @@ async function run() {
   const ds = new DataSource(buildDataSourceOptions());
   await ds.initialize();
 
+  const force = process.env.SEED_FORCE === 'true';
+  const existing = await ds.getRepository(Business).count();
+  if (existing > 0 && !force) {
+    console.log(
+      'Seed omitido: ya hay datos (usa SEED_FORCE=true para recrear).',
+    );
+    await ds.destroy();
+    return;
+  }
+
   await ds.query(
     'TRUNCATE "task","sale","touchpoint","campaign","contact","user","business" RESTART IDENTITY CASCADE',
   );

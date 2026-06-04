@@ -29,8 +29,11 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="es">
-      <body className={`${serif.variable} ${sans.variable} ${mono.variable}`}>
+    <html
+      lang="es"
+      className={`${serif.variable} ${sans.variable} ${mono.variable}`}
+    >
+      <body>
         <QueryProvider>{children}</QueryProvider>
       </body>
     </html>
