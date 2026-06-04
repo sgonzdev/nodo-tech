@@ -23,18 +23,24 @@ export const reportsApi = {
     api.get<DrilldownResponse>(`/reports/campaign/${id}/drilldown`),
 };
 
+function recToTask(rec: Recommendation) {
+  return {
+    title: rec.title,
+    context: rec.context,
+    owner: rec.owner,
+    cta: rec.cta,
+    sourceRule: rec.rule,
+  };
+}
+
 export const actionCenterApi = {
   recommendations: (f: DashboardFilters) =>
     api.get<Recommendation[]>(`/action-center/recommendations${filterQuery(f)}`),
   tasks: () => api.get<Task[]>('/action-center/tasks'),
   accept: (rec: Recommendation) =>
-    api.post<Task>('/action-center/tasks', {
-      title: rec.title,
-      context: rec.context,
-      owner: rec.owner,
-      cta: rec.cta,
-      sourceRule: rec.rule,
-    }),
+    api.post<Task>('/action-center/tasks', recToTask(rec)),
+  dismiss: (rec: Recommendation) =>
+    api.post<Task>('/action-center/recommendations/dismiss', recToTask(rec)),
   complete: (id: string) =>
     api.patch<Task>(`/action-center/tasks/${id}`, { status: 'done' }),
   remove: (id: string) => api.delete<void>(`/action-center/tasks/${id}`),

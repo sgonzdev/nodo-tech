@@ -51,12 +51,16 @@ describe('Wild user inputs (e2e)', () => {
         .expect(400);
     });
 
-    it('survives an inverted date range (from > to) without crashing', async () => {
-      const res = await agent
+    it('rejects an inverted date range (from > to) with 400', async () => {
+      await agent
         .get('/api/reports/metrics?from=2026-12-31&to=2020-01-01')
+        .expect(400);
+    });
+
+    it('accepts a valid date range', async () => {
+      await agent
+        .get('/api/reports/metrics?from=2020-01-01&to=2026-12-31')
         .expect(200);
-      expect(res.body.realRevenue).toBe(0);
-      expect(res.body.conversions).toBe(0);
     });
 
     it('ignores a SQL-injection attempt in a filter param (400, not 500)', async () => {

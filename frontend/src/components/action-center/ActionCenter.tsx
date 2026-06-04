@@ -1,7 +1,6 @@
 'use client';
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { useState } from 'react';
 import { actionCenterApi } from '@/lib/queries';
 import { DashboardFilters, Recommendation, Task } from '@/lib/types';
 import { LoadingState, EmptyState } from '@/components/states/States';
@@ -12,7 +11,6 @@ interface Props {
 
 export function ActionCenter({ filters }: Props) {
   const qc = useQueryClient();
-  const [dismissed, setDismissed] = useState<Set<string>>(new Set());
   const recs = useQuery({
     queryKey: ['recommendations', filters],
     queryFn: () => actionCenterApi.recommendations(filters),
@@ -24,10 +22,15 @@ export function ActionCenter({ filters }: Props) {
 
   const invalidate = () => {
     qc.invalidateQueries({ queryKey: ['tasks'] });
+    qc.invalidateQueries({ queryKey: ['recommendations'] });
   };
 
   const accept = useMutation({
     mutationFn: (rec: Recommendation) => actionCenterApi.accept(rec),
+    onSuccess: invalidate,
+  });
+  const dismiss = useMutation({
+    mutationFn: (rec: Recommendation) => actionCenterApi.dismiss(rec),
     onSuccess: invalidate,
   });
   const complete = useMutation({
@@ -39,10 +42,7 @@ export function ActionCenter({ filters }: Props) {
     onSuccess: invalidate,
   });
 
-  const acceptedTitles = new Set(tasks.data?.map((t) => t.title));
-  const pending = (recs.data ?? []).filter(
-    (r) => !acceptedTitles.has(r.title) && !dismissed.has(r.title),
-  );
+  const pending = recs.data ?? [];
 
   return (
     <div className="grid gap-4 lg:grid-cols-2">
@@ -63,10 +63,9 @@ export function ActionCenter({ filters }: Props) {
                 <span className="text-xs text-slate-500">{rec.owner}</span>
                 <div className="flex gap-2">
                   <button
-                    onClick={() =>
-                      setDismissed((d) => new Set(d).add(rec.title))
-                    }
-                    className="rounded border border-slate-700 px-3 py-1 text-xs text-slate-400 hover:bg-slate-800"
+                    onClick={() => dismiss.mutate(rec)}
+                    disabled={dismiss.isPending}
+                    className="rounded border border-slate-700 px-3 py-1 text-xs text-slate-400 hover:bg-slate-800 disabled:opacity-50"
                   >
                     Descartar
                   </button>

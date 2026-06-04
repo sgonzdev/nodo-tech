@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { In, Repository } from 'typeorm';
+import { Not, Repository } from 'typeorm';
 import { TaskStatus } from '../../domain/enums';
 import { ReportsService } from '../../reports/services/reports.service';
 import { ReportQueryDto } from '../../reports/dto/report-query.dto';
@@ -22,27 +22,47 @@ export class ActionCenterService {
     businessId: string,
     query: ReportQueryDto,
   ): Promise<Recommendation[]> {
-    const [campaigns, audienceOrigins] = await Promise.all([
+    const [campaigns, audienceOrigins, handledTitles] = await Promise.all([
       this.reports.byCampaign(businessId, query),
       this.reports.byAudienceOrigin(businessId, query),
+      this.handledTitles(businessId),
     ]);
-    return runRules({ campaigns, audienceOrigins });
+    return runRules({ campaigns, audienceOrigins }).filter(
+      (rec) => !handledTitles.has(rec.title),
+    );
+  }
+
+  async dismissRecommendation(
+    businessId: string,
+    dto: CreateTaskDto,
+    now: Date,
+  ) {
+    return this.create(businessId, dto, now, TaskStatus.DISMISSED);
+  }
+
+  private async handledTitles(businessId: string): Promise<Set<string>> {
+    const tasks = await this.tasks.find({
+      where: { businessId },
+      select: { title: true },
+    });
+    return new Set(tasks.map((t) => t.title));
   }
 
   list(businessId: string) {
     return this.tasks.find({
-      where: { businessId },
+      where: { businessId, status: Not(TaskStatus.DISMISSED) },
       order: { createdAt: 'DESC' },
     });
   }
 
-  async create(businessId: string, dto: CreateTaskDto, now: Date) {
+  async create(
+    businessId: string,
+    dto: CreateTaskDto,
+    now: Date,
+    status: TaskStatus = TaskStatus.ACCEPTED,
+  ) {
     const existing = await this.tasks.findOne({
-      where: {
-        businessId,
-        title: dto.title,
-        status: In([TaskStatus.ACCEPTED, TaskStatus.DONE]),
-      },
+      where: { businessId, title: dto.title },
     });
     if (existing) return existing;
 
@@ -52,12 +72,7 @@ export class ActionCenterService {
         .toISOString()
         .slice(0, 10);
     return this.tasks.save(
-      this.tasks.create({
-        ...dto,
-        businessId,
-        suggestedDate,
-        status: TaskStatus.ACCEPTED,
-      }),
+      this.tasks.create({ ...dto, businessId, suggestedDate, status }),
     );
   }
 

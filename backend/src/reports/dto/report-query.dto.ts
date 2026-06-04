@@ -1,7 +1,15 @@
 import { Type } from 'class-transformer';
-import { IsEnum, IsInt, IsOptional, IsUUID, Max, Min } from 'class-validator';
+import {
+  IsDateString,
+  IsEnum,
+  IsInt,
+  IsOptional,
+  IsUUID,
+  Max,
+  Min,
+} from 'class-validator';
 import { AttributionModel, AudienceOrigin } from '../../domain/enums';
-import { IsDateString } from 'class-validator';
+import { IsAfterOrEqual } from '../../common/validators/date-range.validator';
 
 export class ReportQueryDto {
   @IsOptional()
@@ -10,6 +18,7 @@ export class ReportQueryDto {
 
   @IsOptional()
   @IsDateString()
+  @IsAfterOrEqual('from')
   to?: string;
 
   @IsOptional()

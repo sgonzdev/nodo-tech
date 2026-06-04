@@ -36,6 +36,11 @@ export class ActionCenterController {
     return this.service.create(businessId, dto, new Date());
   }
 
+  @Post('recommendations/dismiss')
+  dismiss(@CurrentBusiness() businessId: string, @Body() dto: CreateTaskDto) {
+    return this.service.dismissRecommendation(businessId, dto, new Date());
+  }
+
   @Patch('tasks/:id')
   update(
     @CurrentBusiness() businessId: string,

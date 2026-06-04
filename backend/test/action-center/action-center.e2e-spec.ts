@@ -28,6 +28,28 @@ describe('Action Center (e2e)', () => {
     expect(res.body.some((r: any) => r.rule === 'roas_below_one')).toBe(true);
   });
 
+  it('dismissing a recommendation removes it from the list and persists', async () => {
+    const before = await agent.get('/api/action-center/recommendations');
+    const target = before.body[0];
+
+    await agent
+      .post('/api/action-center/recommendations/dismiss')
+      .send({
+        title: target.title,
+        context: target.context,
+        owner: target.owner,
+        cta: target.cta,
+        sourceRule: target.rule,
+      })
+      .expect(201);
+
+    const after = await agent.get('/api/action-center/recommendations');
+    expect(after.body.some((r: any) => r.title === target.title)).toBe(false);
+
+    const tasks = await agent.get('/api/action-center/tasks');
+    expect(tasks.body.some((t: any) => t.title === target.title)).toBe(false);
+  });
+
   it('accepts a recommendation as a task and is idempotent', async () => {
     const payload = {
       title: 'Pausar campaña X',
