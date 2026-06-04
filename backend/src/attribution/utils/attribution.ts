@@ -1,12 +1,12 @@
-import { AttributionModel } from '../domain/enums';
+import { AttributionModel } from '../../domain/enums';
 import {
   AttributionContext,
   CreditedTouchpoint,
   PathTouchpoint,
-} from './attribution.types';
-import { linear } from './models/linear';
-import { timeDecay } from './models/time-decay';
-import { positionBased } from './models/position-based';
+} from '../types/attribution.types';
+import { linear } from '../models/linear';
+import { timeDecay } from '../models/time-decay';
+import { positionBased } from '../models/position-based';
 
 export const DEFAULT_HALF_LIFE_DAYS = 7;
 export const DEFAULT_ATTRIBUTION_WINDOW_DAYS = 30;

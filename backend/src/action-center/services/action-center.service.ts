@@ -1,13 +1,13 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { In, Repository } from 'typeorm';
-import { TaskStatus } from '../domain/enums';
-import { ReportsService } from '../reports/services/reports.service';
-import { ReportQueryDto } from '../reports/dto/report-query.dto';
-import { Task } from './task.entity';
-import { CreateTaskDto, UpdateTaskDto } from './dto/task.dto';
-import { runRules } from './rules';
-import { Recommendation } from './recommendation.types';
+import { TaskStatus } from '../../domain/enums';
+import { ReportsService } from '../../reports/services/reports.service';
+import { ReportQueryDto } from '../../reports/dto/report-query.dto';
+import { Task } from '../../domain/entities/task.entity';
+import { CreateTaskDto, UpdateTaskDto } from '../dto/task.dto';
+import { runRules } from '../rules';
+import { Recommendation } from '../types/recommendation.types';
 
 const DEFAULT_DUE_DAYS = 7;
 

@@ -1,4 +1,4 @@
-import { Rule, RuleInput } from '../recommendation.types';
+import { Rule, RuleInput } from '../types/recommendation.types';
 
 const cop = (n: number) =>
   new Intl.NumberFormat('es-CO', {

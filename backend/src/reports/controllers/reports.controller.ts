@@ -7,11 +7,11 @@ import {
   Res,
 } from '@nestjs/common';
 import { Response } from 'express';
-import { CurrentBusiness } from '../auth/decorators/current-user.decorator';
-import { ReportsService } from './services/reports.service';
-import { DrilldownService } from './services/drilldown.service';
-import { ReportQueryDto } from './dto/report-query.dto';
-import { toCsv } from './utils/csv.util';
+import { CurrentBusiness } from '../../auth/decorators/current-user.decorator';
+import { ReportsService } from '../services/reports.service';
+import { DrilldownService } from '../services/drilldown.service';
+import { ReportQueryDto } from '../dto/report-query.dto';
+import { toCsv } from '../utils/csv.util';
 
 @Controller('reports')
 export class ReportsController {

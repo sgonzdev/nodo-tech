@@ -1,4 +1,4 @@
-import { CreditedTouchpoint, PathTouchpoint } from './attribution.types';
+import { CreditedTouchpoint, PathTouchpoint } from '../types/attribution.types';
 
 const CENTS = 100;
 

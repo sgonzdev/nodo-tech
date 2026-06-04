@@ -1,4 +1,7 @@
-import { CampaignRow, AudienceOriginRow } from '../reports/types/reports.types';
+import {
+  CampaignRow,
+  AudienceOriginRow,
+} from '../../reports/types/reports.types';
 
 export interface Recommendation {
   rule: string;

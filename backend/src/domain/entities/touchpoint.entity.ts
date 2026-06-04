@@ -1,5 +1,5 @@
 import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm';
-import { AudienceOrigin, Channel } from '../domain/enums';
+import { AudienceOrigin, Channel } from '../enums';
 
 @Entity('touchpoint')
 @Index(['businessId', 'contactId', 'occurredAt'])

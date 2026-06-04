@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ReportsModule } from '../reports/reports.module';
-import { Task } from './task.entity';
-import { ActionCenterController } from './action-center.controller';
-import { ActionCenterService } from './action-center.service';
+import { Task } from '../domain/entities/task.entity';
+import { ActionCenterController } from './controllers/action-center.controller';
+import { ActionCenterService } from './services/action-center.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Task]), ReportsModule],

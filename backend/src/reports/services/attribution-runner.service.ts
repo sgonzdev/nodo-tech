@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Sale } from '../../sales/sale.entity';
-import { Touchpoint } from '../../touchpoints/touchpoint.entity';
-import { attribute, buildPath } from '../../attribution/attribution';
-import { PathTouchpoint } from '../../attribution/attribution.types';
+import { Sale } from '../../domain/entities/sale.entity';
+import { Touchpoint } from '../../domain/entities/touchpoint.entity';
+import { attribute, buildPath } from '../../attribution/utils/attribution';
+import { PathTouchpoint } from '../../attribution/types/attribution.types';
 import { ReportQueryDto } from '../dto/report-query.dto';
 import { AttributedCredit } from '../types/reports.types';
 

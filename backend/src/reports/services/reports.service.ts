@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Campaign } from '../../campaigns/campaign.entity';
+import { Campaign } from '../../domain/entities/campaign.entity';
 import { AttributionRunnerService } from './attribution-runner.service';
 import { ReportQueryDto } from '../dto/report-query.dto';
 import {

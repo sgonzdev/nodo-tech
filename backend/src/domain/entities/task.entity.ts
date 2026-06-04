@@ -5,7 +5,7 @@ import {
   Index,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { TaskStatus } from '../domain/enums';
+import { TaskStatus } from '../enums';
 
 @Entity('task')
 export class Task {

@@ -1,5 +1,5 @@
-import { AttributionFn } from '../attribution.types';
-import { distributeByWeights } from '../credit.util';
+import { AttributionFn } from '../types/attribution.types';
+import { distributeByWeights } from '../utils/credit.util';
 
 const FIRST_WEIGHT = 0.4;
 const LAST_WEIGHT = 0.4;

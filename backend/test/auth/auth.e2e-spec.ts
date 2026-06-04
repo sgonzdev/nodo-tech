@@ -1,6 +1,6 @@
 import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
-import { createE2EApp, E2EContext } from './setup-e2e';
+import { createE2EApp, E2EContext } from '../helpers/setup-e2e';
 
 describe('Auth (e2e)', () => {
   let ctx: E2EContext;

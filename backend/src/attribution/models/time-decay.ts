@@ -1,5 +1,5 @@
-import { AttributionFn } from '../attribution.types';
-import { distributeByWeights } from '../credit.util';
+import { AttributionFn } from '../types/attribution.types';
+import { distributeByWeights } from '../utils/credit.util';
 
 const MS_PER_DAY = 1000 * 60 * 60 * 24;
 

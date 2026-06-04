@@ -7,10 +7,10 @@ import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
 import { DataSource, Repository } from 'typeorm';
-import { Business } from '../business/business.entity';
-import { User } from './user.entity';
-import { LoginDto, RegisterDto } from './dto/auth.dto';
-import { AuthUser, JwtPayload } from './auth.types';
+import { Business } from '../../domain/entities/business.entity';
+import { User } from '../../domain/entities/user.entity';
+import { LoginDto, RegisterDto } from '../dto/auth.dto';
+import { AuthUser, JwtPayload } from '../utils/auth.types';
 
 const SALT_ROUNDS = 10;
 

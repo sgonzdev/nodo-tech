@@ -1,5 +1,5 @@
 import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm';
-import { Channel } from '../domain/enums';
+import { Channel } from '../enums';
 
 @Entity('campaign')
 export class Campaign {

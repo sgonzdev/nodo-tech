@@ -1,4 +1,4 @@
-import { AudienceOrigin, Channel } from '../domain/enums';
+import { AudienceOrigin, Channel } from '../../domain/enums';
 
 export interface PathTouchpoint {
   id: string;

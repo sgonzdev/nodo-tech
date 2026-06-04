@@ -9,10 +9,10 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
-import { CurrentBusiness } from '../auth/decorators/current-user.decorator';
-import { ReportQueryDto } from '../reports/dto/report-query.dto';
-import { ActionCenterService } from './action-center.service';
-import { CreateTaskDto, UpdateTaskDto } from './dto/task.dto';
+import { CurrentBusiness } from '../../auth/decorators/current-user.decorator';
+import { ReportQueryDto } from '../../reports/dto/report-query.dto';
+import { ActionCenterService } from '../services/action-center.service';
+import { CreateTaskDto, UpdateTaskDto } from '../dto/task.dto';
 
 @Controller('action-center')
 export class ActionCenterController {

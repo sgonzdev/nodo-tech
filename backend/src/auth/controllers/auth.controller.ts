@@ -1,12 +1,12 @@
 import { Body, Controller, Get, HttpCode, Post, Res } from '@nestjs/common';
 import { Response } from 'express';
-import { AuthService } from './auth.service';
-import { AUTH_COOKIE } from './auth.constants';
-import { authCookieOptions } from './cookie.options';
-import { CurrentUser } from './decorators/current-user.decorator';
-import { Public } from './decorators/public.decorator';
-import { LoginDto, RegisterDto } from './dto/auth.dto';
-import { AuthUser } from './auth.types';
+import { AuthService } from '../services/auth.service';
+import { AUTH_COOKIE } from '../utils/auth.constants';
+import { authCookieOptions } from '../utils/cookie.options';
+import { CurrentUser } from '../decorators/current-user.decorator';
+import { Public } from '../decorators/public.decorator';
+import { LoginDto, RegisterDto } from '../dto/auth.dto';
+import { AuthUser } from '../utils/auth.types';
 
 @Controller('auth')
 export class AuthController {

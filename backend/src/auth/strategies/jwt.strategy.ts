@@ -3,8 +3,8 @@ import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
 import { Request } from 'express';
 import { ExtractJwt, Strategy } from 'passport-jwt';
-import { AUTH_COOKIE } from '../auth.constants';
-import { AuthUser, JwtPayload } from '../auth.types';
+import { AUTH_COOKIE } from '../utils/auth.constants';
+import { AuthUser, JwtPayload } from '../utils/auth.types';
 
 function fromCookie(req: Request): string | null {
   return req?.cookies?.[AUTH_COOKIE] ?? null;

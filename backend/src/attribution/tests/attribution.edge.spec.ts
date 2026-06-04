@@ -1,6 +1,6 @@
 import { AttributionModel, AudienceOrigin, Channel } from '../../domain/enums';
-import { attribute, buildPath } from '../attribution';
-import { PathTouchpoint } from '../attribution.types';
+import { attribute, buildPath } from '../utils/attribution';
+import { PathTouchpoint } from '../types/attribution.types';
 
 const SALE = new Date('2026-01-31T12:00:00Z');
 
