@@ -8,6 +8,7 @@ import { Task } from '../../domain/entities/task.entity';
 import { CreateTaskDto, UpdateTaskDto } from '../dto/task.dto';
 import { runRules } from '../rules';
 import { Recommendation } from '../types/recommendation.types';
+import { paginate, PaginationDto } from '../../common/dto/pagination.dto';
 
 const DEFAULT_DUE_DAYS = 7;
 
@@ -48,11 +49,14 @@ export class ActionCenterService {
     return new Set(tasks.map((t) => t.title));
   }
 
-  list(businessId: string) {
-    return this.tasks.find({
+  async list(businessId: string, pagination: PaginationDto) {
+    const [items, total] = await this.tasks.findAndCount({
       where: { businessId, status: Not(TaskStatus.DISMISSED) },
       order: { createdAt: 'DESC' },
+      skip: (pagination.page - 1) * pagination.limit,
+      take: pagination.limit,
     });
+    return paginate(items, total, pagination);
   }
 
   async create(

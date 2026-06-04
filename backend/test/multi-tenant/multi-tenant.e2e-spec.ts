@@ -55,7 +55,7 @@ describe('Multi-tenant isolation (e2e)', () => {
 
     const otherList = await other.get('/api/action-center/tasks');
     expect(
-      otherList.body.find((t: any) => t.id === created.body.id),
+      otherList.body.items.find((t: any) => t.id === created.body.id),
     ).toBeUndefined();
 
     await other

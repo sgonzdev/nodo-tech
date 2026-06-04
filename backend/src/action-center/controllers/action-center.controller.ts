@@ -13,6 +13,7 @@ import { CurrentBusiness } from '../../auth/decorators/current-user.decorator';
 import { ReportQueryDto } from '../../reports/dto/report-query.dto';
 import { ActionCenterService } from '../services/action-center.service';
 import { CreateTaskDto, UpdateTaskDto } from '../dto/task.dto';
+import { PaginationDto } from '../../common/dto/pagination.dto';
 
 @Controller('action-center')
 export class ActionCenterController {
@@ -27,8 +28,11 @@ export class ActionCenterController {
   }
 
   @Get('tasks')
-  list(@CurrentBusiness() businessId: string) {
-    return this.service.list(businessId);
+  list(
+    @CurrentBusiness() businessId: string,
+    @Query() pagination: PaginationDto,
+  ) {
+    return this.service.list(businessId, pagination);
   }
 
   @Post('tasks')

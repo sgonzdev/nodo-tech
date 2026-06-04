@@ -16,3 +16,42 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
+
+  backend:
+    build: ./backend
+    container_name: nodotech_api
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USER: nodotech
+      DB_PASSWORD: nodotech
+      DB_NAME: nodotech_marketing
+      JWT_SECRET: ${JWT_SECRET:-dev-secret-cambia-en-produccion}
+      JWT_EXPIRES_IN: 7d
+      PORT: 3001
+      FRONTEND_ORIGIN: http://localhost:${FRONTEND_PORT:-3002}
+      NODE_ENV: production
+      SEED_ON_START: "true"
+    ports:
+      - "${BACKEND_PORT:-3001}:3001"
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        NEXT_PUBLIC_API_URL: http://localhost:${BACKEND_PORT:-3001}/api
+    container_name: nodotech_web
+    restart: unless-stopped
+    depends_on:
+      - backend
+    environment:
+      NODE_ENV: production
+      HOSTNAME: 0.0.0.0
+      PORT: 3000
+      API_INTERNAL_URL: http://backend:3001/api
+    ports:
+      - "${FRONTEND_PORT:-3002}:3000"

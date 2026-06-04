@@ -82,4 +82,15 @@ describe('Reports (e2e)', () => {
     expect(res.headers['content-type']).toContain('text/csv');
     expect(res.text.split('\n')[0]).toContain('attributedRevenue');
   });
+
+  it('paginates drilldown touchpoints', async () => {
+    const campaigns = await agent.get('/api/reports/by-campaign');
+    const id = campaigns.body[0].campaignId;
+    const res = await agent
+      .get(`/api/reports/campaign/${id}/drilldown?page=1&limit=5`)
+      .expect(200);
+    expect(res.body.touchpoints).toHaveProperty('items');
+    expect(res.body.touchpoints).toHaveProperty('total');
+    expect(res.body.touchpoints.items.length).toBeLessThanOrEqual(5);
+  });
 });

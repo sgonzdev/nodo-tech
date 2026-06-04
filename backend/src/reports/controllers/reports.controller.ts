@@ -11,6 +11,7 @@ import { CurrentBusiness } from '../../auth/decorators/current-user.decorator';
 import { ReportsService } from '../services/reports.service';
 import { DrilldownService } from '../services/drilldown.service';
 import { ReportQueryDto } from '../dto/report-query.dto';
+import { PaginationDto } from '../../common/dto/pagination.dto';
 import { toCsv } from '../utils/csv.util';
 
 @Controller('reports')
@@ -48,8 +49,9 @@ export class ReportsController {
   drill(
     @CurrentBusiness() businessId: string,
     @Param('id', ParseUUIDPipe) id: string,
+    @Query() pagination: PaginationDto,
   ) {
-    return this.drilldown.forCampaign(businessId, id);
+    return this.drilldown.forCampaign(businessId, id, pagination);
   }
 
   @Get('export.csv')

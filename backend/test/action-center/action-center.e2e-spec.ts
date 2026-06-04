@@ -47,7 +47,23 @@ describe('Action Center (e2e)', () => {
     expect(after.body.some((r: any) => r.title === target.title)).toBe(false);
 
     const tasks = await agent.get('/api/action-center/tasks');
-    expect(tasks.body.some((t: any) => t.title === target.title)).toBe(false);
+    expect(tasks.body.items.some((t: any) => t.title === target.title)).toBe(false);
+  });
+
+  it('returns tasks in a paginated envelope', async () => {
+    const res = await agent
+      .get('/api/action-center/tasks?page=1&limit=5')
+      .expect(200);
+    expect(res.body).toHaveProperty('items');
+    expect(res.body).toHaveProperty('total');
+    expect(res.body).toHaveProperty('totalPages');
+    expect(res.body.page).toBe(1);
+    expect(res.body.limit).toBe(5);
+    expect(Array.isArray(res.body.items)).toBe(true);
+  });
+
+  it('rejects an invalid pagination limit (400)', async () => {
+    await agent.get('/api/action-center/tasks?limit=9999').expect(400);
   });
 
   it('accepts a recommendation as a task and is idempotent', async () => {
@@ -71,7 +87,7 @@ describe('Action Center (e2e)', () => {
 
     const list = await agent.get('/api/action-center/tasks');
     expect(
-      list.body.filter((t: any) => t.title === payload.title),
+      list.body.items.filter((t: any) => t.title === payload.title),
     ).toHaveLength(1);
   });
 
