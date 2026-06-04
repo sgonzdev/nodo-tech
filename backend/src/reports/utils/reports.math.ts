@@ -1,4 +1,4 @@
-import { AttributedCredit } from './reports.types';
+import { AttributedCredit } from '../types/reports.types';
 
 export function round2(value: number): number {
   return Math.round(value * 100) / 100;

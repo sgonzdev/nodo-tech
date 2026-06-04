@@ -1,9 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Campaign } from '../campaigns/campaign.entity';
-import { Touchpoint } from '../touchpoints/touchpoint.entity';
-import { Sale } from '../sales/sale.entity';
+import { Campaign } from '../../campaigns/campaign.entity';
+import { Touchpoint } from '../../touchpoints/touchpoint.entity';
+import { Sale } from '../../sales/sale.entity';
 
 @Injectable()
 export class DrilldownService {

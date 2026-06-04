@@ -1,6 +1,6 @@
 import { AttributionRunnerService } from './attribution-runner.service';
-import { AttributionModel, AudienceOrigin, Channel } from '../domain/enums';
-import { ReportQueryDto } from './dto/report-query.dto';
+import { AttributionModel, AudienceOrigin, Channel } from '../../domain/enums';
+import { ReportQueryDto } from '../dto/report-query.dto';
 
 function repoReturning<T>(rows: T[]) {
   const qb: any = {

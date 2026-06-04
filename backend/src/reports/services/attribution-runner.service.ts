@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Sale } from '../sales/sale.entity';
-import { Touchpoint } from '../touchpoints/touchpoint.entity';
-import { attribute, buildPath } from '../attribution/attribution';
-import { PathTouchpoint } from '../attribution/attribution.types';
-import { ReportQueryDto } from './dto/report-query.dto';
-import { AttributedCredit } from './reports.types';
+import { Sale } from '../../sales/sale.entity';
+import { Touchpoint } from '../../touchpoints/touchpoint.entity';
+import { attribute, buildPath } from '../../attribution/attribution';
+import { PathTouchpoint } from '../../attribution/attribution.types';
+import { ReportQueryDto } from '../dto/report-query.dto';
+import { AttributedCredit } from '../types/reports.types';
 
 const HALF_LIFE_DAYS = 7;
 

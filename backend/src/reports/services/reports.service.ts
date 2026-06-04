@@ -1,16 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Campaign } from '../campaigns/campaign.entity';
+import { Campaign } from '../../campaigns/campaign.entity';
 import { AttributionRunnerService } from './attribution-runner.service';
-import { ReportQueryDto } from './dto/report-query.dto';
+import { ReportQueryDto } from '../dto/report-query.dto';
 import {
   AttributedCredit,
   AudienceOriginRow,
   CampaignRow,
   CoreMetrics,
-} from './reports.types';
-import { roas, diffPct, sumCredits } from './reports.math';
+} from '../types/reports.types';
+import { roas, diffPct, sumCredits } from '../utils/reports.math';
 
 const RECONCILIATION_THRESHOLD = 5;
 

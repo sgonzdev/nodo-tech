@@ -1,5 +1,5 @@
 import { diffPct, roas, round2, sumCredits } from './reports.math';
-import { AudienceOrigin } from '../domain/enums';
+import { AudienceOrigin } from '../../domain/enums';
 
 describe('reports.math', () => {
   describe('roas', () => {

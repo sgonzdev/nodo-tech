@@ -1,4 +1,4 @@
-import { AudienceOrigin } from '../domain/enums';
+import { AudienceOrigin } from '../../domain/enums';
 
 export interface AttributedCredit {
   campaignId: string;
