@@ -4,6 +4,7 @@ import {
   CampaignRow,
   CoreMetrics,
   DashboardFilters,
+  Paginated,
   Recommendation,
   Task,
 } from './types';
@@ -19,8 +20,10 @@ export const reportsApi = {
     api.get<CampaignRow[]>(`/reports/by-campaign${filterQuery(f)}`),
   byAudienceOrigin: (f: DashboardFilters) =>
     api.get<AudienceOriginRow[]>(`/reports/by-audience-origin${filterQuery(f)}`),
-  drilldown: (id: string) =>
-    api.get<DrilldownResponse>(`/reports/campaign/${id}/drilldown`),
+  drilldown: (id: string, page = 1) =>
+    api.get<DrilldownResponse>(
+      `/reports/campaign/${id}/drilldown${buildQuery({ page })}`,
+    ),
 };
 
 function recToTask(rec: Recommendation) {
@@ -36,7 +39,8 @@ function recToTask(rec: Recommendation) {
 export const actionCenterApi = {
   recommendations: (f: DashboardFilters) =>
     api.get<Recommendation[]>(`/action-center/recommendations${filterQuery(f)}`),
-  tasks: () => api.get<Task[]>('/action-center/tasks'),
+  tasks: (page = 1) =>
+    api.get<Paginated<Task>>(`/action-center/tasks${buildQuery({ page })}`),
   accept: (rec: Recommendation) =>
     api.post<Task>('/action-center/tasks', recToTask(rec)),
   dismiss: (rec: Recommendation) =>
@@ -53,13 +57,15 @@ export const authApi = {
   logout: () => api.post('/auth/logout'),
 };
 
+export interface DrilldownTouchpoint {
+  id: string;
+  channel: string;
+  audienceOrigin: string;
+  occurredAt: string;
+}
+
 export interface DrilldownResponse {
   campaign: { id: string; name: string; channel: string };
-  touchpoints: {
-    id: string;
-    channel: string;
-    audienceOrigin: string;
-    occurredAt: string;
-  }[];
+  touchpoints: Paginated<DrilldownTouchpoint>;
   sales: { id: string; amount: string; occurredAt: string }[];
 }

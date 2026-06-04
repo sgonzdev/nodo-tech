@@ -1,0 +1,56 @@
+:root {
+  --bg: #07100d;
+  --bg-grad-1: #0a1714;
+  --panel: #0d1714;
+  --panel-2: #101c18;
+  --surface: #122019;
+  --surface-2: #16271f;
+  --hover: #1a2c23;
+
+  --line: rgba(150, 200, 178, 0.1);
+  --line-soft: rgba(150, 200, 178, 0.06);
+  --line-strong: rgba(150, 200, 178, 0.18);
+
+  --text: #e9f3ee;
+  --dim: #9fb3aa;
+  --faint: #66796f;
+  --ghost: #41534b;
+
+  --accent: #34d8a0;
+  --accent-2: #1fb487;
+  --accent-soft: rgba(52, 216, 160, 0.14);
+  --accent-line: rgba(52, 216, 160, 0.34);
+
+  --good: #3ddc84;
+  --good-soft: rgba(61, 220, 132, 0.13);
+  --alert: #ff6a6a;
+  --alert-soft: rgba(255, 106, 106, 0.13);
+  --plat: #5b9dff;
+  --plat-soft: rgba(91, 157, 255, 0.13);
+  --amber: #f5b13d;
+  --amber-soft: rgba(245, 177, 61, 0.14);
+  --violet: #c084fc;
+
+  --r-sm: 8px;
+  --r: 12px;
+  --r-lg: 16px;
+  --r-xl: 22px;
+
+  --space-1: 6px;
+  --space-2: 10px;
+  --space-3: 14px;
+  --space-4: 18px;
+  --space-5: 24px;
+  --space-6: 32px;
+
+  --shadow: 0 1px 0 rgba(255, 255, 255, 0.03) inset,
+    0 18px 40px -24px rgba(0, 0, 0, 0.7);
+  --shadow-pop: 0 24px 60px -20px rgba(0, 0, 0, 0.75),
+    0 0 0 1px var(--line-strong);
+
+  --serif: var(--font-serif), Georgia, serif;
+  --sans: var(--font-sans), system-ui, -apple-system, sans-serif;
+  --mono: var(--font-mono), ui-monospace, monospace;
+
+  --rail: 374px;
+}

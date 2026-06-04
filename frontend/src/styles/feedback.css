@@ -1,0 +1,117 @@
+.sk {
+  background: linear-gradient(
+    100deg,
+    var(--surface) 30%,
+    var(--hover) 50%,
+    var(--surface) 70%
+  );
+  background-size: 220% 100%;
+  animation: shimmer 1.3s infinite;
+  border-radius: 6px;
+}
+@keyframes shimmer {
+  from {
+    background-position: 200% 0;
+  }
+  to {
+    background-position: -60% 0;
+  }
+}
+.state-box {
+  text-align: center;
+  padding: 60px 30px;
+}
+.state-ico {
+  width: 64px;
+  height: 64px;
+  border-radius: 18px;
+  display: grid;
+  place-items: center;
+  margin: 0 auto 18px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  color: var(--faint);
+}
+.state-ico svg {
+  width: 30px;
+  height: 30px;
+}
+.state-title {
+  font-family: var(--serif);
+  font-size: 21px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+.state-text {
+  font-size: 13.5px;
+  color: var(--dim);
+  max-width: 380px;
+  margin: 0 auto 20px;
+  line-height: 1.55;
+}
+.state-box.error .state-ico {
+  color: var(--alert);
+  border-color: var(--alert-soft);
+  background: var(--alert-soft);
+}
+
+.toasts {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 120;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+}
+.toast {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  background: var(--panel-2);
+  border: 1px solid var(--line-strong);
+  border-radius: 12px;
+  padding: 12px 16px;
+  box-shadow: var(--shadow-pop);
+  font-size: 13px;
+  font-weight: 600;
+  animation: toastin 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  min-width: 280px;
+}
+@keyframes toastin {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+}
+.toast .ti {
+  width: 26px;
+  height: 26px;
+  border-radius: 7px;
+  display: grid;
+  place-items: center;
+  flex: none;
+}
+.toast.ok .ti {
+  background: var(--good-soft);
+  color: var(--good);
+}
+.toast.info .ti {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+.toast.warn .ti {
+  background: var(--amber-soft);
+  color: var(--amber);
+}
+.toast .tmsg {
+  color: var(--text);
+}
+.toast .tsub {
+  color: var(--faint);
+  font-weight: 500;
+  font-size: 11.5px;
+  margin-top: 1px;
+}

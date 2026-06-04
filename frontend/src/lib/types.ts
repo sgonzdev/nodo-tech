@@ -49,6 +49,14 @@ export interface Task {
   createdAt: string;
 }
 
+export interface Paginated<T> {
+  items: T[];
+  total: number;
+  page: number;
+  limit: number;
+  totalPages: number;
+}
+
 export interface DashboardFilters {
   from?: string;
   to?: string;

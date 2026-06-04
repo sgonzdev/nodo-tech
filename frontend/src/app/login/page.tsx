@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { authApi } from '@/lib/queries';
 import { ApiError } from '@/lib/api';
+import { Icons } from '@/components/atoms/Icons';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -21,54 +22,53 @@ export default function LoginPage() {
       router.replace('/');
       router.refresh();
     } catch (err) {
-      setError(
-        err instanceof ApiError ? err.message : 'No se pudo iniciar sesión',
-      );
+      setError(err instanceof ApiError ? err.message : 'No se pudo iniciar sesión');
     } finally {
       setLoading(false);
     }
   }
 
   return (
-    <main className="flex min-h-screen items-center justify-center px-4">
-      <form
-        onSubmit={onSubmit}
-        className="w-full max-w-sm space-y-5 rounded-2xl border border-slate-800 bg-slate-900/60 p-8"
-      >
-        <div>
-          <h1 className="text-xl font-semibold">NodoTech · Marketing</h1>
-          <p className="mt-1 text-sm text-slate-400">
-            Análisis con atribución real
-          </p>
+    <main className="login-wrap">
+      <form className="login-card" onSubmit={onSubmit}>
+        <div className="login-brand">
+          <div className="logo">
+            <Icons.logo />
+          </div>
+          <div>
+            <div className="brand-name">
+              Nodo<b>Tech</b>
+            </div>
+            <div className="brand-sub">Marketing · Análisis 07</div>
+          </div>
         </div>
 
-        <label className="block text-sm">
-          <span className="text-slate-300">Email</span>
+        <p className="login-tagline">
+          ROAS reconciliado contra ventas reales. La diferencia con Meta, a la vista.
+        </p>
+
+        <label className="login-field">
+          <span>Email</span>
           <input
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="mt-1 w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 outline-none focus:border-emerald-500"
+            autoComplete="email"
           />
         </label>
-
-        <label className="block text-sm">
-          <span className="text-slate-300">Contraseña</span>
+        <label className="login-field">
+          <span>Contraseña</span>
           <input
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="mt-1 w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 outline-none focus:border-emerald-500"
+            autoComplete="current-password"
           />
         </label>
 
-        {error && <p className="text-sm text-rose-400">{error}</p>}
+        {error && <div className="login-error">{error}</div>}
 
-        <button
-          type="submit"
-          disabled={loading}
-          className="w-full rounded-lg bg-emerald-500 py-2 font-medium text-slate-950 transition hover:bg-emerald-400 disabled:opacity-60"
-        >
+        <button type="submit" className="btn btn-primary login-submit" disabled={loading}>
           {loading ? 'Entrando…' : 'Iniciar sesión'}
         </button>
       </form>

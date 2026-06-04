@@ -1,0 +1,182 @@
+.scrim {
+  position: fixed;
+  inset: 0;
+  background: rgba(3, 8, 6, 0.62);
+  backdrop-filter: blur(3px);
+  z-index: 80;
+  animation: fade 0.2s;
+}
+.drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: min(620px, 92vw);
+  z-index: 90;
+  background: linear-gradient(180deg, var(--panel-2), var(--bg));
+  border-left: 1px solid var(--line-strong);
+  box-shadow: -30px 0 80px -30px rgba(0, 0, 0, 0.8);
+  display: flex;
+  flex-direction: column;
+  animation: slidein 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+}
+@keyframes slidein {
+  from {
+    transform: translateX(40px);
+    opacity: 0.4;
+  }
+}
+.drawer-head {
+  padding: 22px 24px 18px;
+  border-bottom: 1px solid var(--line);
+}
+.drawer-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 14px;
+}
+.drawer-title .cc {
+  width: 12px;
+  height: 36px;
+  border-radius: 4px;
+  flex: none;
+}
+.drawer-title .dt-name {
+  font-family: var(--serif);
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.drawer-title .dt-meta {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--faint);
+  margin-top: 3px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.drawer-body {
+  overflow-y: auto;
+  padding: 20px 24px 50px;
+}
+.drawer-tabs {
+  display: flex;
+  gap: 4px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 11px;
+  padding: 3px;
+  margin-top: 18px;
+}
+.drawer-tabs button {
+  flex: 1;
+  font-family: var(--sans);
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--dim);
+  background: transparent;
+  border: 0;
+  border-radius: 8px;
+  padding: 9px 8px;
+  cursor: pointer;
+  transition: 0.14s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+}
+.drawer-tabs button:hover {
+  color: var(--text);
+}
+.drawer-tabs button.on {
+  background: var(--surface-2);
+  color: var(--text);
+  box-shadow: 0 6px 14px -8px rgba(0, 0, 0, 0.6);
+}
+.drawer-tabs .dt-n {
+  font-family: var(--mono);
+  font-size: 10px;
+  background: var(--surface);
+  color: var(--dim);
+  border-radius: 9px;
+  padding: 1px 6px;
+  font-weight: 600;
+}
+.drawer-tabs button.on .dt-n {
+  background: var(--accent);
+  color: #052017;
+}
+.dk-stat {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin: 18px 0 6px;
+}
+.dk-stat .dks {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 12px 13px;
+}
+.dk-stat .dks .l {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--faint);
+}
+.dk-stat .dks .v {
+  font-family: var(--sans);
+  font-weight: 800;
+  font-size: 19px;
+  margin-top: 5px;
+}
+.subh {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--dim);
+  margin: 24px 0 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.row-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 0;
+  border-bottom: 1px solid var(--line-soft);
+}
+.ch-tag {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  background: var(--surface-2);
+  color: var(--dim);
+  min-width: 78px;
+  text-align: center;
+}
+.ri-main {
+  flex: 1;
+  min-width: 0;
+}
+.ri-name {
+  font-size: 13px;
+  font-weight: 600;
+}
+.ri-meta {
+  font-size: 11px;
+  color: var(--faint);
+  margin-top: 2px;
+}
+.ri-val {
+  font-family: var(--sans);
+  font-variant-numeric: tabular-nums;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--good);
+}

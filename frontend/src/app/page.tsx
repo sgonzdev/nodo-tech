@@ -1,32 +1,39 @@
 'use client';
 
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { reportsApi } from '@/lib/queries';
-import { DashboardFilters } from '@/lib/types';
-import { DashboardHeader } from '@/components/layout/DashboardHeader';
-import { FiltersBar } from '@/components/filters/FiltersBar';
-import { ConversationalInput } from '@/components/conversational/ConversationalInput';
-import { MetricCards } from '@/components/metrics/MetricCards';
-import { DashboardCharts } from '@/components/charts/DashboardCharts';
-import { CampaignTable } from '@/components/campaigns/CampaignTable';
-import { AudienceInsight } from '@/components/audience/AudienceInsight';
-import { ActionCenter } from '@/components/action-center/ActionCenter';
+import { CampaignRow, DashboardFilters } from '@/lib/types';
+import { DashboardShell } from '@/components/templates/DashboardShell';
+import { DashboardHeader } from '@/components/organisms/DashboardHeader';
+import { FilterBar } from '@/components/organisms/FilterBar';
+import { MetricCards } from '@/components/molecules/MetricCards';
+import { ReconHero } from '@/components/organisms/ReconHero';
+import { RevenueChart, RoasCompareChart } from '@/components/organisms/DashboardCharts';
+import { CampaignTable } from '@/components/organisms/CampaignTable';
+import { ActionCenter } from '@/components/organisms/ActionCenter';
+import { DrillDrawer } from '@/components/organisms/DrillDrawer';
+import { Toasts, ToastItem } from '@/components/molecules/Toasts';
 import {
+  DashboardSkeleton,
   EmptyState,
   ErrorState,
-  LoadingState,
-} from '@/components/states/States';
+} from '@/components/molecules/States';
 
-const DEFAULT_FILTERS: DashboardFilters = {
-  model: 'linear',
-  windowDays: 30,
-};
+const DEFAULT_FILTERS: DashboardFilters = { model: 'linear', windowDays: 30 };
 
 export default function DashboardPage() {
   const [filters, setFilters] = useState<DashboardFilters>(DEFAULT_FILTERS);
-  const patch = (p: Partial<DashboardFilters>) =>
-    setFilters((f) => ({ ...f, ...p }));
+  const [drill, setDrill] = useState<{ row: CampaignRow; index: number } | null>(null);
+  const [toasts, setToasts] = useState<ToastItem[]>([]);
+
+  const patch = (p: Partial<DashboardFilters>) => setFilters((f) => ({ ...f, ...p }));
+
+  const toast = useCallback((msg: string, sub: string | null, kind: string) => {
+    const id = Math.random().toString(36).slice(2);
+    setToasts((p) => [...p, { id, msg, sub, kind }]);
+    setTimeout(() => setToasts((p) => p.filter((t) => t.id !== id)), 3200);
+  }, []);
 
   const metrics = useQuery({
     queryKey: ['metrics', filters],
@@ -36,61 +43,70 @@ export default function DashboardPage() {
     queryKey: ['by-campaign', filters],
     queryFn: () => reportsApi.byCampaign(filters),
   });
-  const audience = useQuery({
-    queryKey: ['by-audience', filters],
-    queryFn: () => reportsApi.byAudienceOrigin(filters),
-  });
+
+  const onRefresh = () => {
+    metrics.refetch();
+    campaigns.refetch();
+    toast('Reporte recalculado', 'Cruce marketing × POS actualizado', 'ok');
+  };
+
+  const rows = campaigns.data ?? [];
+  const isLoading = metrics.isLoading || campaigns.isLoading;
+  const isError = metrics.isError || campaigns.isError;
+  const isEmpty = !isLoading && !isError && rows.length === 0;
 
   return (
-    <main className="mx-auto max-w-7xl space-y-6 px-4 py-8">
-      <DashboardHeader filters={filters} />
-      <ConversationalInput onApply={patch} />
-      <FiltersBar
-        filters={filters}
-        campaigns={campaigns.data ?? []}
-        onChange={patch}
-      />
-
-      {metrics.isLoading && <LoadingState label="Calculando métricas…" />}
-      {metrics.isError && <ErrorState onRetry={() => metrics.refetch()} />}
-      {metrics.data && <MetricCards metrics={metrics.data} />}
-
-      <Section query={campaigns}>
-        {(rows) =>
-          rows.length === 0 ? (
-            <EmptyState label="No hay campañas en el rango" />
-          ) : (
-            <div className="space-y-6">
-              <DashboardCharts rows={rows} />
-              <div className="grid gap-4 lg:grid-cols-3">
-                <div className="lg:col-span-2">
-                  <CampaignTable rows={rows} />
-                </div>
-                {audience.data && <AudienceInsight rows={audience.data} />}
-              </div>
-            </div>
-          )
+    <>
+      <DashboardShell
+        header={
+          <DashboardHeader filters={filters} onRefresh={onRefresh} refreshing={metrics.isFetching} />
         }
-      </Section>
-
-      <ActionCenter filters={filters} />
-    </main>
+        filters={<FilterBar filters={filters} campaigns={rows} onChange={patch} />}
+        main={
+          <>
+            {isLoading && <DashboardSkeleton />}
+            {isError && <ErrorState onRetry={onRefresh} />}
+            {isEmpty && <EmptyState onReset={() => setFilters(DEFAULT_FILTERS)} />}
+            {!isLoading && !isError && !isEmpty && (
+              <>
+                <div className="eyebrow" style={{ marginBottom: 14 }}>
+                  Métricas core · ventana {filters.windowDays}d
+                </div>
+                {metrics.data && <MetricCards metrics={metrics.data} />}
+                {metrics.data && <ReconHero metrics={metrics.data} />}
+                <div className="section-head">
+                  <div className="section-title">Desempeño por campaña</div>
+                  <div className="section-note">
+                    Atribución conmutable · totales agregados en servidor
+                  </div>
+                </div>
+                <div className="grid-2">
+                  <RevenueChart rows={rows} />
+                  <RoasCompareChart rows={rows} />
+                </div>
+                <div className="section-head">
+                  <div className="section-title">Reconciliación por campaña</div>
+                  <div className="section-note">
+                    Filas en ámbar superan 5% de diferencia · clic para drill-down
+                  </div>
+                </div>
+                <CampaignTable
+                  rows={rows}
+                  onDrill={(id) => {
+                    const index = rows.findIndex((r) => r.campaignId === id);
+                    setDrill({ row: rows[index], index });
+                  }}
+                />
+              </>
+            )}
+          </>
+        }
+        rail={<ActionCenter filters={filters} onToast={toast} />}
+      />
+      {drill && (
+        <DrillDrawer campaign={drill.row} index={drill.index} onClose={() => setDrill(null)} />
+      )}
+      <Toasts items={toasts} />
+    </>
   );
-}
-
-function Section<T>({
-  query,
-  children,
-}: {
-  query: {
-    isLoading: boolean;
-    isError: boolean;
-    data?: T[];
-    refetch: () => void;
-  };
-  children: (data: T[]) => React.ReactNode;
-}) {
-  if (query.isLoading) return <LoadingState />;
-  if (query.isError) return <ErrorState onRetry={query.refetch} />;
-  return <>{query.data && children(query.data)}</>;
 }

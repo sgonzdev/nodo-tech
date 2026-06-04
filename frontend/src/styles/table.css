@@ -1,0 +1,143 @@
+.tbl-wrap {
+  background: linear-gradient(168deg, var(--surface), var(--panel));
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+table.tbl {
+  width: 100%;
+  border-collapse: collapse;
+}
+.tbl thead th {
+  font-family: var(--mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--faint);
+  font-weight: 600;
+  text-align: right;
+  padding: 13px 16px;
+  border-bottom: 1px solid var(--line);
+  white-space: nowrap;
+}
+.tbl thead th.l {
+  text-align: left;
+}
+.tbl tbody td {
+  padding: 15px 16px;
+  border-bottom: 1px solid var(--line-soft);
+  text-align: right;
+  font-size: 13.5px;
+}
+.tbl tbody tr {
+  cursor: pointer;
+  transition: 0.13s;
+}
+.tbl tbody tr:hover {
+  background: var(--hover);
+}
+.tbl tbody tr:last-child td {
+  border-bottom: 0;
+}
+.tbl tbody tr.flagged {
+  background: linear-gradient(90deg, var(--amber-soft), transparent 60%);
+}
+.tbl tbody tr.flagged:hover {
+  background: linear-gradient(90deg, rgba(245, 177, 61, 0.2), var(--hover));
+}
+.c-name {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  text-align: left;
+}
+.c-name .cc {
+  width: 9px;
+  height: 26px;
+  border-radius: 3px;
+  flex: none;
+}
+.c-name .cn-main {
+  font-weight: 700;
+  font-size: 13.5px;
+}
+.c-name .cn-aud {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--faint);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-top: 2px;
+}
+.roas-cell {
+  font-family: var(--sans);
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+}
+.roas-cell.good {
+  color: var(--good);
+}
+.roas-cell.bad {
+  color: var(--alert);
+}
+.roas-cell.plat {
+  color: var(--plat);
+}
+.diff-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--sans);
+  font-variant-numeric: tabular-nums;
+  font-size: 12.5px;
+  font-weight: 700;
+  padding: 4px 9px;
+  border-radius: 7px;
+}
+.diff-badge.amber {
+  color: var(--amber);
+  background: var(--amber-soft);
+}
+.diff-badge.calm {
+  color: var(--dim);
+  background: var(--surface-2);
+}
+.diff-badge.pos {
+  color: var(--good);
+  background: var(--good-soft);
+}
+.alert-tag {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--alert);
+  background: var(--alert-soft);
+  padding: 2px 6px;
+  border-radius: 5px;
+  margin-left: 8px;
+}
+.tbl tfoot td {
+  padding: 14px 16px;
+  text-align: right;
+  font-size: 13px;
+  border-top: 1px solid var(--line-strong);
+  background: var(--panel-2);
+}
+.tbl tfoot .tf-label {
+  text-align: left;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--dim);
+}
+.go-drill {
+  color: var(--faint);
+  transition: 0.14s;
+}
+.tbl tbody tr:hover .go-drill {
+  color: var(--accent);
+  transform: translateX(2px);
+}

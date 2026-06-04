@@ -15,42 +15,49 @@ React Query + Recharts.
 - Node 20+
 - Docker (para Postgres) — o un Postgres local
 
-## Arranque rápido
+## Arranque rápido (todo con Docker)
+
+Un solo comando levanta Postgres, backend y frontend. El backend corre migrations y
+seed automáticamente al arrancar:
 
 ```bash
-# 1. Base de datos
-docker compose up -d
-
-# 2. Backend
-cd backend
-cp .env.example .env
-npm install
-npm run migration:run
-npm run seed
-npm run start:dev          # API en http://localhost:3001/api
-
-# 3. Frontend (en otra terminal)
-cd frontend
-cp .env.example .env.local
-npm install
-PORT=3002 npm run dev      # App en http://localhost:3002
+docker compose up --build
 ```
 
-Abrir **http://localhost:3002** e iniciar sesión con el usuario demo:
+- Frontend: **http://localhost:3002**
+- API: **http://localhost:3001/api**
+
+Iniciar sesión con el usuario demo:
 
 ```
 email:    demo@nodotech.io
 password: demo12345
 ```
 
-> El puerto de Postgres por defecto es **5439** (para no chocar con un Postgres local
-> en 5432). Es configurable con `DB_PORT` en `backend/.env` y `docker-compose.yml`.
+> Puertos configurables por variables de entorno: `FRONTEND_PORT` (3002), `BACKEND_PORT`
+> (3001), `DB_PORT` (5439, así no choca con un Postgres local en 5432).
+
+## Arranque manual (desarrollo)
+
+```bash
+# 1. Solo la base de datos
+docker compose up -d postgres
+
+# 2. Backend
+cd backend && cp .env.example .env && npm install
+npm run migration:run && npm run seed
+npm run start:dev          # API en http://localhost:3001/api
+
+# 3. Frontend (otra terminal)
+cd frontend && cp .env.example .env.local && npm install
+PORT=3002 npm run dev      # App en http://localhost:3002
+```
 
 ## Scripts útiles (backend)
 
 ```bash
 npm test                 # 45 tests unitarios (atribución, reportes, reglas, edge cases)
-npm run test:e2e         # 38 tests e2e (auth, reportes, action-center, multi-tenant, casos límite)
+npm run test:e2e         # 43 tests e2e (auth, reportes, action-center, multi-tenant, paginación, casos límite)
 npm run migration:run    # aplica migrations
 npm run seed             # recarga datos sintéticos + usuario demo
 npm run build            # compila
@@ -110,6 +117,11 @@ dueño, fecha sugerida, contexto y CTA), se puede completar o descartar.
 - Export CSV del reporte por campaña.
 - Input **conversacional** (parser de reglas determinista, sin LLM) que traduce texto a
   filtros del dashboard.
+- **Paginación** en las listas que crecen (tasks del Action Center y touchpoints del
+  drill-down), con `page`/`limit` validados en el servidor.
+- **Stack dockerizado completo**: `docker compose up` levanta DB + backend + frontend con
+  migrations y seed automáticos.
+- **88 tests** (45 unitarios + 43 e2e con supertest, incluyendo casos límite hostiles).
 
 ### Fuera de alcance (siguiente iteración)
 Refresh tokens / rotación de JWT · modelo de atribución data-driven ML (roadmap v1.5) ·
