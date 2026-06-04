@@ -1,7 +1,7 @@
 .scrim {
   position: fixed;
   inset: 0;
-  background: rgba(3, 8, 6, 0.62);
+  background: var(--scrim);
   backdrop-filter: blur(3px);
   z-index: 80;
   animation: fade 0.2s;
@@ -105,7 +105,7 @@
 }
 .drawer-tabs button.on .dt-n {
   background: var(--accent);
-  color: #052017;
+  color: var(--on-accent);
 }
 .dk-stat {
   display: grid;

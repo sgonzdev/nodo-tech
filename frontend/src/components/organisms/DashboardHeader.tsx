@@ -6,6 +6,7 @@ import { authApi } from '@/lib/queries';
 import { API_URL, buildQuery } from '@/lib/api';
 import { DashboardFilters } from '@/lib/types';
 import { Icons } from '@/components/atoms/Icons';
+import { Logo } from '@/components/atoms/Logo';
 
 interface Props {
   filters: DashboardFilters;
@@ -29,9 +30,7 @@ export function DashboardHeader({ filters, onRefresh, refreshing }: Props) {
   return (
     <header className="hd">
       <div className="brand">
-        <div className="logo">
-          <Icons.logo />
-        </div>
+        <Logo />
         <div>
           <div className="brand-name">
             Nodo<b>Tech</b>

@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { authApi } from '@/lib/queries';
 import { ApiError, clearAuthRedirectFlag } from '@/lib/api';
-import { Icons } from '@/components/atoms/Icons';
+import { Logo } from '@/components/atoms/Logo';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -33,9 +33,7 @@ export default function LoginPage() {
     <main className="login-wrap">
       <form className="login-card" onSubmit={onSubmit}>
         <div className="login-brand">
-          <div className="logo">
-            <Icons.logo />
-          </div>
+          <Logo size={44} />
           <div>
             <div className="brand-name">
               Nodo<b>Tech</b>

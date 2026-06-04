@@ -25,6 +25,11 @@ export const metadata: Metadata = {
     'ROAS reconciliado contra ventas reales con atribución multi-touch',
 };
 
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {

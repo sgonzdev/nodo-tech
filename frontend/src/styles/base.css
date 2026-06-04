@@ -34,12 +34,12 @@ body {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: #1d2e26;
+  background: var(--scroll);
   border-radius: 20px;
   border: 3px solid var(--bg);
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #294035;
+  background: var(--scroll-hover);
 }
 
 @keyframes spin {

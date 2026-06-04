@@ -48,7 +48,7 @@
 
 .bar-row {
   display: grid;
-  grid-template-columns: 116px 1fr auto;
+  grid-template-columns: 130px 1fr 150px;
   align-items: center;
   gap: 12px;
   margin-bottom: 13px;
@@ -81,6 +81,32 @@
   font-size: 13px;
   color: var(--text);
   white-space: nowrap;
+  display: flex;
+  align-items: baseline;
+  gap: 7px;
+  justify-content: flex-end;
+}
+.bar-row .bv-share {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--faint);
+  min-width: 30px;
+  text-align: right;
+}
+.bl-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 3px;
+  margin-right: 7px;
+  vertical-align: middle;
+}
+.chart-total {
+  font-family: var(--sans);
+  font-weight: 800;
+  font-size: 15px;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
 }
 
 .roas-chart {
@@ -171,6 +197,66 @@
   text-align: center;
   color: var(--faint);
   font-size: 13px;
+}
+
+.bar-row,
+.roas-grp {
+  cursor: default;
+  border-radius: 8px;
+  transition: background 0.14s;
+  padding: 4px 6px;
+  margin-left: -6px;
+  margin-right: -6px;
+}
+.bar-row:hover,
+.roas-grp:hover {
+  background: var(--hover);
+}
+.bar-row:hover .bar-fill,
+.roas-grp:hover .rl-fill {
+  filter: brightness(1.12);
+}
+
+.chart-tip {
+  position: fixed;
+  z-index: 200;
+  pointer-events: none;
+  background: var(--panel-2);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r);
+  box-shadow: var(--shadow-pop);
+  padding: 10px 12px;
+  min-width: 170px;
+}
+.chart-tip-title {
+  font-family: var(--serif);
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: var(--text);
+}
+.chart-tip-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  font-size: 12px;
+  margin-top: 4px;
+}
+.chart-tip-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--dim);
+}
+.chart-tip-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+.chart-tip-val {
+  font-weight: 700;
+  color: var(--text);
 }
 
 @media (max-width: 720px) {
