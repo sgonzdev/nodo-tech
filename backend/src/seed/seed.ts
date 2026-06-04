@@ -38,14 +38,12 @@ async function run() {
   await ds
     .getRepository(Campaign)
     .save(data.campaigns.map((c) => ({ ...c, businessId: business.id })));
-  await ds
-    .getRepository(Touchpoint)
-    .save(
-      data.touchpoints.map((t) => ({
-        ...t,
-        businessId: business.id,
-      })) as Touchpoint[],
-    );
+  await ds.getRepository(Touchpoint).save(
+    data.touchpoints.map((t) => ({
+      ...t,
+      businessId: business.id,
+    })) as Touchpoint[],
+  );
   await ds
     .getRepository(Sale)
     .save(data.sales.map((s) => ({ ...s, businessId: business.id })));

@@ -38,7 +38,7 @@ export class AuthController {
   @Post('logout')
   @HttpCode(200)
   logout(@Res({ passthrough: true }) res: Response) {
-    res.clearCookie(AUTH_COOKIE, authCookieOptions());
+    res.clearCookie(AUTH_COOKIE, { path: '/' });
     return { ok: true };
   }
 
