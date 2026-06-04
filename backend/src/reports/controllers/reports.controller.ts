@@ -10,7 +10,8 @@ import { Response } from 'express';
 import { CurrentBusiness } from '../../auth/decorators/current-user.decorator';
 import { ReportsService } from '../services/reports.service';
 import { DrilldownService } from '../services/drilldown.service';
-import { ReportQueryDto } from '../dto/report-query.dto';
+import { PdfReportService } from '../services/pdf-report.service';
+import { ReportQueryDto, ExportFormat } from '../dto/report-query.dto';
 import { PaginationDto } from '../../common/dto/pagination.dto';
 import { toCsv } from '../utils/csv.util';
 
@@ -19,6 +20,7 @@ export class ReportsController {
   constructor(
     private readonly reports: ReportsService,
     private readonly drilldown: DrilldownService,
+    private readonly pdf: PdfReportService,
   ) {}
 
   @Get('metrics')
@@ -54,13 +56,31 @@ export class ReportsController {
     return this.drilldown.forCampaign(businessId, id, pagination);
   }
 
-  @Get('export.csv')
+  @Get('export')
   async export(
     @CurrentBusiness() businessId: string,
     @Query() query: ReportQueryDto,
     @Res() res: Response,
   ) {
     const rows = await this.reports.byCampaign(businessId, query);
+
+    if (query.format === ExportFormat.PDF) {
+      const metrics = await this.reports.metrics(businessId, query);
+      const pdf = await this.pdf.generate({
+        metrics,
+        campaigns: rows,
+        model: query.model,
+        windowDays: query.windowDays,
+      });
+      res.setHeader('Content-Type', 'application/pdf');
+      res.setHeader(
+        'Content-Disposition',
+        'attachment; filename="reporte-nodotech.pdf"',
+      );
+      res.send(pdf);
+      return;
+    }
+
     const csv = toCsv(
       [
         'name',
@@ -77,7 +97,7 @@ export class ReportsController {
     res.setHeader('Content-Type', 'text/csv; charset=utf-8');
     res.setHeader(
       'Content-Disposition',
-      'attachment; filename="reporte-campanas.csv"',
+      'attachment; filename="reporte-nodotech.csv"',
     );
     res.send(csv);
   }

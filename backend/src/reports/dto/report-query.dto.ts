@@ -9,6 +9,11 @@ import {
   Min,
 } from 'class-validator';
 import { AttributionModel, AudienceOrigin } from '../../domain/enums';
+
+export enum ExportFormat {
+  CSV = 'csv',
+  PDF = 'pdf',
+}
 import { IsAfterOrEqual } from '../../common/validators/date-range.validator';
 
 export class ReportQueryDto {
@@ -39,4 +44,8 @@ export class ReportQueryDto {
   @Min(1)
   @Max(365)
   windowDays = 30;
+
+  @IsOptional()
+  @IsEnum(ExportFormat)
+  format: ExportFormat = ExportFormat.CSV;
 }

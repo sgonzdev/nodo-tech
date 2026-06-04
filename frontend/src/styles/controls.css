@@ -72,6 +72,7 @@
   font-size: 13px;
   color: var(--dim);
   cursor: pointer;
+  text-decoration: none;
 }
 .menu-item:hover {
   background: var(--hover);

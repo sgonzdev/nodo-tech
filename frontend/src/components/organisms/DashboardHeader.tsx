@@ -2,6 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
+import { useEffect, useRef, useState } from 'react';
 import { authApi } from '@/lib/queries';
 import { API_URL, buildQuery } from '@/lib/api';
 import { DashboardFilters } from '@/lib/types';
@@ -17,6 +18,18 @@ interface Props {
 export function DashboardHeader({ filters, onRefresh, refreshing }: Props) {
   const router = useRouter();
   const me = useQuery({ queryKey: ['me'], queryFn: authApi.me });
+  const [exportOpen, setExportOpen] = useState(false);
+  const exportRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (exportRef.current && !exportRef.current.contains(e.target as Node)) {
+        setExportOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, []);
 
   async function logout() {
     await authApi.logout();
@@ -24,7 +37,8 @@ export function DashboardHeader({ filters, onRefresh, refreshing }: Props) {
     router.refresh();
   }
 
-  const csvUrl = `${API_URL}/reports/export.csv${buildQuery({ ...filters })}`;
+  const exportUrl = (format: 'csv' | 'pdf') =>
+    `${API_URL}/reports/export${buildQuery({ ...filters, format })}`;
   const businessId = me.data?.businessId ?? '';
 
   return (
@@ -65,9 +79,32 @@ export function DashboardHeader({ filters, onRefresh, refreshing }: Props) {
         />
       </button>
 
-      <a className="btn" href={csvUrl}>
-        <Icons.download /> Exportar
-      </a>
+      <div className="menu-wrap" ref={exportRef}>
+        <button className="btn" onClick={() => setExportOpen((o) => !o)}>
+          <Icons.download /> Exportar
+          <Icons.chev style={{ width: 12, height: 12 }} />
+        </button>
+        {exportOpen && (
+          <div className="menu">
+            <div className="menu-label">Formato</div>
+            <a
+              className="menu-item"
+              href={exportUrl('pdf')}
+              onClick={() => setExportOpen(false)}
+            >
+              <Icons.download style={{ width: 14, height: 14 }} /> PDF para
+              stakeholders
+            </a>
+            <a
+              className="menu-item"
+              href={exportUrl('csv')}
+              onClick={() => setExportOpen(false)}
+            >
+              <Icons.download style={{ width: 14, height: 14 }} /> CSV (datos)
+            </a>
+          </div>
+        )}
+      </div>
       <button className="btn btn-ghost" onClick={logout}>
         <Icons.exit /> Salir
       </button>

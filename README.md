@@ -72,6 +72,7 @@ npm run build            # compila
 ## Decisiones de diseño y supuestos
 
 ### Multi-tenant + Auth
+
 El enunciado permite resolver el `business_id` por header o por usuario autenticado.
 Elegí **usuario autenticado con JWT en cookie httpOnly** por ser la opción más segura: el
 `business_id` se deriva del token (no de un header falsificable), un `JwtAuthGuard` global
@@ -79,6 +80,7 @@ protege todos los endpoints (salvo los marcados `@Public()`), y cada query queda
 negocio del usuario. La cookie es `httpOnly`, `SameSite=Lax` y `Secure` en producción.
 
 ### Atribución (núcleo)
+
 Para cada venta POS se reconstruye el **path**: touchpoints del mismo contacto
 **anteriores** a la venta y dentro de la **ventana de atribución** (configurable, default
 **30 días**), ordenados cronológicamente. El crédito del monto se reparte según el modelo.
@@ -95,6 +97,7 @@ monto de la venta. El residuo de redondeo se ajusta en el último touchpoint
 (`credit.util.ts`). El modelo es **conmutable** desde la UI y recalcula todo el dashboard.
 
 ### Reportes y reconciliación
+
 - Las métricas core y la tabla por campaña combinan el crédito atribuido (servicio) con
   **agregaciones SQL** de inversión, ingreso de píxel y conteo de conversiones.
 - El cruce evita N+1: una query carga las ventas del rango, otra los touchpoints de esos
@@ -105,16 +108,20 @@ monto de la venta. El residuo de redondeo se ajusta en el último touchpoint
   según su crédito en esa campaña, para obtener un ROAS real comparable por origen.
 
 ### Action Center
+
 Reglas puras (`action-center/rules/`) que derivan recomendaciones del dato real:
 ROAS real < 1 → *pausar/redistribuir*; mejor origen rentable → *escalar*; brecha de
 reconciliación > 5% → *auditar píxel*. Cada recomendación se acepta como **task** (con
 dueño, fecha sugerida, contexto y CTA), se puede completar o descartar.
 
 ### Extras incluidos
+
 - Tests del algoritmo (suma de crédito, proporciones, casos borde) y de reportes.
 - Ventana de atribución configurable por el usuario.
 - Insight por origen de audiencia (bloque 7.2).
-- Export CSV del reporte por campaña.
+- Export del reporte por campaña en **CSV** (datos) y **PDF** con marca, métricas,
+  gráfica de barras y tabla formateada para stakeholders. Endpoint único
+  `GET /reports/export?format=csv|pdf` (PDF generado con PDFKit en el servidor).
 - Input **conversacional** (parser de reglas determinista, sin LLM) que traduce texto a
   filtros del dashboard.
 - **Paginación** en las listas que crecen (tasks del Action Center y touchpoints del
@@ -122,12 +129,6 @@ dueño, fecha sugerida, contexto y CTA), se puede completar o descartar.
 - **Stack dockerizado completo**: `docker compose up` levanta DB + backend + frontend con
   migrations y seed automáticos.
 - **88 tests** (45 unitarios + 43 e2e con supertest, incluyendo casos límite hostiles).
-
-### Fuera de alcance (siguiente iteración)
-Refresh tokens / rotación de JWT · modelo de atribución data-driven ML (roadmap v1.5) ·
-export PDF · sync bidireccional con Meta/Google · caché persistente de atribución.
-
----
 
 ## Estructura
 
@@ -141,17 +142,17 @@ docker-compose.yml
 
 **backend/.env**
 
-| Variable | Default | Descripción |
-|---|---|---|
-| `DB_HOST` / `DB_PORT` | `localhost` / `5439` | Conexión a Postgres |
-| `DB_USER` / `DB_PASSWORD` / `DB_NAME` | `nodotech` / `nodotech` / `nodotech_marketing` | Credenciales |
-| `JWT_SECRET` | — | Secreto para firmar el JWT |
-| `JWT_EXPIRES_IN` | `7d` | Expiración del token |
-| `PORT` | `3001` | Puerto de la API |
-| `FRONTEND_ORIGIN` | `http://localhost:3002` | Origen permitido por CORS |
+| Variable                                    | Default                                              | Descripción               |
+| ------------------------------------------- | ---------------------------------------------------- | -------------------------- |
+| `DB_HOST` / `DB_PORT`                   | `localhost` / `5439`                             | Conexión a Postgres       |
+| `DB_USER` / `DB_PASSWORD` / `DB_NAME` | `nodotech` / `nodotech` / `nodotech_marketing` | Credenciales               |
+| `JWT_SECRET`                              | —                                                   | Secreto para firmar el JWT |
+| `JWT_EXPIRES_IN`                          | `7d`                                               | Expiración del token      |
+| `PORT`                                    | `3001`                                             | Puerto de la API           |
+| `FRONTEND_ORIGIN`                         | `http://localhost:3002`                            | Origen permitido por CORS  |
 
 **frontend/.env.local**
 
-| Variable | Default | Descripción |
-|---|---|---|
+| Variable                | Default                       | Descripción  |
+| ----------------------- | ----------------------------- | ------------- |
 | `NEXT_PUBLIC_API_URL` | `http://localhost:3001/api` | URL de la API |

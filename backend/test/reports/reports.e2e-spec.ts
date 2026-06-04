@@ -77,10 +77,28 @@ describe('Reports (e2e)', () => {
       .expect(404);
   });
 
-  it('exports a CSV report', async () => {
-    const res = await agent.get('/api/reports/export.csv').expect(200);
+  it('exports a CSV report (default format)', async () => {
+    const res = await agent.get('/api/reports/export').expect(200);
     expect(res.headers['content-type']).toContain('text/csv');
     expect(res.text.split('\n')[0]).toContain('attributedRevenue');
+  });
+
+  it('exports a PDF report when format=pdf', async () => {
+    const res = await agent
+      .get('/api/reports/export?format=pdf')
+      .buffer(true)
+      .parse((r, cb) => {
+        const data: Buffer[] = [];
+        r.on('data', (c: Buffer) => data.push(c));
+        r.on('end', () => cb(null, Buffer.concat(data)));
+      })
+      .expect(200);
+    expect(res.headers['content-type']).toContain('application/pdf');
+    expect(res.body.slice(0, 4).toString()).toBe('%PDF');
+  });
+
+  it('rejects an unknown export format (400)', async () => {
+    await agent.get('/api/reports/export?format=xml').expect(400);
   });
 
   it('paginates drilldown touchpoints', async () => {
