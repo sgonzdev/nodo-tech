@@ -41,7 +41,7 @@ export function generateData(now: Date, seed: number): GeneratedData {
 
   const contacts = Array.from({ length: CONTACT_COUNT }, (_, i) => ({
     id: randomUUID(),
-    externalId: `aurora-${1000 + i}`,
+    externalId: `startuptech-${1000 + i}`,
     name: `Cliente ${i + 1}`,
     email: `cliente${i + 1}@correo.co`,
   }));

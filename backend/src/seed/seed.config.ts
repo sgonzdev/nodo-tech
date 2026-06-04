@@ -5,7 +5,7 @@ export const CONTACT_COUNT = 32;
 export const TARGET_SALES = 42;
 
 export const DEMO_USER = {
-  businessName: 'Tienda Aurora COL',
+  businessName: 'Startup Tech',
   email: 'demo@nodotech.io',
   password: 'demo12345',
 };

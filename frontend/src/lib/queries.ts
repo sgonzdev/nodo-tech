@@ -53,7 +53,13 @@ export const actionCenterApi = {
 export const authApi = {
   login: (email: string, password: string) =>
     api.post<{ email: string }>('/auth/login', { email, password }),
-  me: () => api.get<{ email: string; businessId: string }>('/auth/me'),
+  me: () =>
+    api.get<{
+      email: string;
+      businessId: string;
+      businessName: string;
+      currency: string;
+    }>('/auth/me'),
   logout: () => api.post('/auth/logout'),
 };
 

@@ -43,8 +43,8 @@ export function Sidebar({ section, onSection, metrics, recsCount }: Props) {
       <div className="tenant">
         <span className="dot" />
         <div>
-          <div className="t-name">{me.data?.email ?? 'Cargando…'}</div>
-          <div className="t-city">Tienda Aurora · COL</div>
+          <div className="t-name">{me.data?.businessName ?? 'Cargando…'}</div>
+          <div className="t-city">{me.data?.email ?? ''}</div>
         </div>
         <Icons.chev className="chev" style={{ marginLeft: 'auto' }} />
       </div>

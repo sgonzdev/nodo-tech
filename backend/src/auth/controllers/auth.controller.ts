@@ -44,7 +44,7 @@ export class AuthController {
 
   @Get('me')
   me(@CurrentUser() user: AuthUser) {
-    return { email: user.email, businessId: user.businessId };
+    return this.auth.profile(user);
   }
 
   private setCookie(res: Response, user: AuthUser) {

@@ -51,5 +51,7 @@ describe('Auth (e2e)', () => {
       .send({ email: 'demo@nodotech.io', password: 'demo12345' });
     const res = await agent.get('/api/auth/me').expect(200);
     expect(res.body.email).toBe('demo@nodotech.io');
+    expect(res.body.businessName).toBeTruthy();
+    expect(res.body.businessId).toBeTruthy();
   });
 });

@@ -18,9 +18,23 @@ const SALT_ROUNDS = 10;
 export class AuthService {
   constructor(
     @InjectRepository(User) private readonly users: Repository<User>,
+    @InjectRepository(Business)
+    private readonly businesses: Repository<Business>,
     private readonly dataSource: DataSource,
     private readonly jwt: JwtService,
   ) {}
+
+  async profile(user: AuthUser) {
+    const business = await this.businesses.findOne({
+      where: { id: user.businessId },
+    });
+    return {
+      email: user.email,
+      businessId: user.businessId,
+      businessName: business?.name ?? 'Mi negocio',
+      currency: business?.currency ?? 'COP',
+    };
+  }
 
   async register(dto: RegisterDto): Promise<AuthUser> {
     const existing = await this.users.findOne({ where: { email: dto.email } });
