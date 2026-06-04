@@ -14,44 +14,45 @@ export function ReconHero({ metrics }: Props) {
 
   return (
     <div className="hero">
-      <div className="eyebrow" style={{ marginBottom: 18 }}>
-        Reconciliación · la diferencia con Meta a la vista
+      <div className="eyebrow" style={{ marginBottom: 20 }}>
+        {platHigher
+          ? 'Cuidado: Meta te muestra más de lo que de verdad vendiste'
+          : 'Buenas noticias: vendiste más de lo que Meta te muestra'}
       </div>
       <div className="hero-grid">
         <div className="hero-col real">
           <div className="hc-label">
             <span className="pill" style={{ background: 'var(--good)' }} />
-            ROAS Real · POS
+            Lo que de verdad rindió
           </div>
           <div className="hc-roas num">{formatRoas(realRoas)}</div>
-          <div className="hc-rev num">{formatCop(realRevenue)} atribuidos a ventas</div>
+          <div className="hc-rev num">{formatCop(realRevenue)} en ventas confirmadas</div>
         </div>
-        <div className="hero-vs">vs</div>
+        <div className="hero-vs">frente a</div>
         <div className="hero-col plat">
           <div className="hc-label">
             <span className="pill" style={{ background: 'var(--plat)' }} />
-            ROAS Plataforma · Píxel
+            Lo que Meta te decía
           </div>
           <div className="hc-roas num">{formatRoas(platformRoas)}</div>
           <div className="hc-rev num">{formatCop(platformRevenue)} reportados por Meta</div>
         </div>
         <div className="hero-delta">
-          <div className="hd-eyebrow">
-            {platHigher ? '⚠ La plataforma sobre-reporta' : '◆ La plataforma sub-reporta'}
-          </div>
+          <div className="hd-eyebrow">La diferencia</div>
           <div className="hd-big num">{formatPct(diff)}</div>
           <div className="hd-text">
             {platHigher ? (
               <span>
-                Meta se atribuye <b>{formatCop(platformRevenue)}</b> pero el POS solo
-                confirma <b>{formatCop(realRevenue)}</b> en ventas reales. NodoTech revela{' '}
-                <b>{formatCop(gap)}</b> de ingreso fantasma.
+                Meta exageraba un <b>{formatPct(Math.abs(diff))}</b>: decía haberte
+                traído <b>{formatCop(platformRevenue)}</b>, pero en caja solo entraron{' '}
+                <b>{formatCop(realRevenue)}</b>. Esa diferencia de <b>{formatCop(gap)}</b>{' '}
+                son ventas que nunca ocurrieron.
               </span>
             ) : (
               <span>
-                El píxel solo ve <b>{formatCop(platformRevenue)}</b>, pero las ventas reales
-                (POS) suman <b>{formatCop(realRevenue)}</b>. NodoTech acredita{' '}
-                <b>{formatCop(gap)}</b> que Meta no ve.
+                Meta se quedaba corto: solo veía <b>{formatCop(platformRevenue)}</b>, pero
+                en caja entraron <b>{formatCop(realRevenue)}</b>. Hay <b>{formatCop(gap)}</b>{' '}
+                en ventas reales que Meta no te acreditaba.
               </span>
             )}
           </div>

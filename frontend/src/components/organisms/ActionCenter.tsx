@@ -10,6 +10,7 @@ import { LoadingState } from '@/components/molecules/States';
 
 interface Props {
   filters: DashboardFilters;
+  grid?: boolean;
   onToast: (msg: string, sub: string | null, kind: string) => void;
 }
 
@@ -19,7 +20,7 @@ const SEVERITY: Record<string, { cls: string; label: string }> = {
   best_audience_origin: { cls: 'good', label: 'Oportunidad' },
 };
 
-export function ActionCenter({ filters, onToast }: Props) {
+export function ActionCenter({ filters, grid, onToast }: Props) {
   const qc = useQueryClient();
   const [tab, setTab] = useState<'recs' | 'tasks'>('recs');
   const [page, setPage] = useState(1);
@@ -94,14 +95,16 @@ export function ActionCenter({ filters, onToast }: Props) {
         ) : recList.length === 0 ? (
           <EmptyMini icon={<Icons.check />} title="Todo bajo control" />
         ) : (
-          recList.map((r) => (
-            <RecCard
-              key={r.title}
-              rec={r}
-              onAccept={() => accept.mutate(r)}
-              onDismiss={() => dismiss.mutate(r)}
-            />
-          ))
+          <div className={grid ? 'act-grid' : ''}>
+            {recList.map((r) => (
+              <RecCard
+                key={r.title}
+                rec={r}
+                onAccept={() => accept.mutate(r)}
+                onDismiss={() => dismiss.mutate(r)}
+              />
+            ))}
+          </div>
         ))}
 
       {tab === 'tasks' &&
