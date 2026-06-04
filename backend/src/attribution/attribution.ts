@@ -31,7 +31,10 @@ export function buildPath(
       const t = tp.occurredAt.getTime();
       return t < saleOccurredAt.getTime() && t >= windowStart;
     })
-    .sort((a, b) => a.occurredAt.getTime() - b.occurredAt.getTime());
+    .sort((a, b) => {
+      const diff = a.occurredAt.getTime() - b.occurredAt.getTime();
+      return diff !== 0 ? diff : a.id.localeCompare(b.id);
+    });
 }
 
 export function attribute(

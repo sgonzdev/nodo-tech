@@ -1,4 +1,4 @@
-import { toCsv } from './csv.util';
+import { toCsv } from '../utils/csv.util';
 
 describe('toCsv', () => {
   it('builds a header row and data rows', () => {

@@ -1,6 +1,7 @@
 'use client';
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useState } from 'react';
 import { actionCenterApi } from '@/lib/queries';
 import { DashboardFilters, Recommendation, Task } from '@/lib/types';
 import { LoadingState, EmptyState } from '@/components/states/States';
@@ -11,6 +12,7 @@ interface Props {
 
 export function ActionCenter({ filters }: Props) {
   const qc = useQueryClient();
+  const [dismissed, setDismissed] = useState<Set<string>>(new Set());
   const recs = useQuery({
     queryKey: ['recommendations', filters],
     queryFn: () => actionCenterApi.recommendations(filters),
@@ -37,27 +39,45 @@ export function ActionCenter({ filters }: Props) {
     onSuccess: invalidate,
   });
 
+  const acceptedTitles = new Set(tasks.data?.map((t) => t.title));
+  const pending = (recs.data ?? []).filter(
+    (r) => !acceptedTitles.has(r.title) && !dismissed.has(r.title),
+  );
+
   return (
     <div className="grid gap-4 lg:grid-cols-2">
       <Panel title="Recomendaciones">
         {recs.isLoading && <LoadingState />}
-        {recs.data?.length === 0 && <EmptyState label="Sin recomendaciones" />}
+        {!recs.isLoading && pending.length === 0 && (
+          <EmptyState label="Sin recomendaciones pendientes" />
+        )}
         <ul className="space-y-3">
-          {recs.data?.map((rec, i) => (
+          {pending.map((rec) => (
             <li
-              key={`${rec.rule}-${i}`}
+              key={rec.title}
               className="rounded-lg border border-slate-800 bg-slate-950/60 p-3"
             >
               <p className="font-medium">{rec.title}</p>
               <p className="mt-1 text-xs text-slate-400">{rec.context}</p>
               <div className="mt-3 flex items-center justify-between">
                 <span className="text-xs text-slate-500">{rec.owner}</span>
-                <button
-                  onClick={() => accept.mutate(rec)}
-                  className="rounded bg-emerald-500 px-3 py-1 text-xs font-medium text-slate-950 hover:bg-emerald-400"
-                >
-                  {rec.cta}
-                </button>
+                <div className="flex gap-2">
+                  <button
+                    onClick={() =>
+                      setDismissed((d) => new Set(d).add(rec.title))
+                    }
+                    className="rounded border border-slate-700 px-3 py-1 text-xs text-slate-400 hover:bg-slate-800"
+                  >
+                    Descartar
+                  </button>
+                  <button
+                    onClick={() => accept.mutate(rec)}
+                    disabled={accept.isPending}
+                    className="rounded bg-emerald-500 px-3 py-1 text-xs font-medium text-slate-950 hover:bg-emerald-400 disabled:opacity-50"
+                  >
+                    {rec.cta}
+                  </button>
+                </div>
               </div>
             </li>
           ))}

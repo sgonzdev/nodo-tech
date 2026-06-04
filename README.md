@@ -49,11 +49,16 @@ password: demo12345
 ## Scripts útiles (backend)
 
 ```bash
-npm test                 # tests del algoritmo de atribución y reportes
+npm test                 # 45 tests unitarios (atribución, reportes, reglas, edge cases)
+npm run test:e2e         # 38 tests e2e (auth, reportes, action-center, multi-tenant, casos límite)
 npm run migration:run    # aplica migrations
 npm run seed             # recarga datos sintéticos + usuario demo
 npm run build            # compila
 ```
+
+> Los tests e2e levantan la app real contra Postgres y crean sus propias bases de datos
+> de test (`nodotech_test_*`) automáticamente; solo requieren que el contenedor de Postgres
+> esté arriba (`docker compose up -d`).
 
 ---
 

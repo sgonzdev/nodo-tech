@@ -1,4 +1,4 @@
-import { AttributionRunnerService } from './attribution-runner.service';
+import { AttributionRunnerService } from '../services/attribution-runner.service';
 import { AttributionModel, AudienceOrigin, Channel } from '../../domain/enums';
 import { ReportQueryDto } from '../dto/report-query.dto';
 

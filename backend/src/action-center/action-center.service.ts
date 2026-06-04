@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { TaskStatus } from '../domain/enums';
 import { ReportsService } from '../reports/services/reports.service';
 import { ReportQueryDto } from '../reports/dto/report-query.dto';
@@ -36,7 +36,16 @@ export class ActionCenterService {
     });
   }
 
-  create(businessId: string, dto: CreateTaskDto, now: Date) {
+  async create(businessId: string, dto: CreateTaskDto, now: Date) {
+    const existing = await this.tasks.findOne({
+      where: {
+        businessId,
+        title: dto.title,
+        status: In([TaskStatus.ACCEPTED, TaskStatus.DONE]),
+      },
+    });
+    if (existing) return existing;
+
     const suggestedDate =
       dto.suggestedDate ??
       new Date(now.getTime() + DEFAULT_DUE_DAYS * 86_400_000)

@@ -1,4 +1,4 @@
-import { runRules } from './index';
+import { runRules } from '../rules';
 import { AudienceOrigin } from '../../domain/enums';
 import { CampaignRow } from '../../reports/types/reports.types';
 

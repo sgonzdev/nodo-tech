@@ -1,4 +1,4 @@
-import { diffPct, roas, round2, sumCredits } from './reports.math';
+import { diffPct, roas, round2, sumCredits } from '../utils/reports.math';
 import { AudienceOrigin } from '../../domain/enums';
 
 describe('reports.math', () => {
@@ -11,6 +11,11 @@ describe('reports.math', () => {
     it('returns 0 when spend is zero', () => {
       expect(roas(5000, 0)).toBe(0);
     });
+
+    it('never returns NaN or Infinity', () => {
+      expect(Number.isFinite(roas(0, 0))).toBe(true);
+      expect(Number.isFinite(roas(1000, -500))).toBe(true);
+    });
   });
 
   describe('diffPct', () => {
@@ -22,6 +27,11 @@ describe('reports.math', () => {
     it('handles real revenue of zero', () => {
       expect(diffPct(1000, 0)).toBe(100);
       expect(diffPct(0, 0)).toBe(0);
+    });
+
+    it('never returns NaN or Infinity', () => {
+      expect(Number.isFinite(diffPct(0, 0))).toBe(true);
+      expect(Number.isFinite(diffPct(1000, 0))).toBe(true);
     });
   });
 
