@@ -44,7 +44,7 @@ export function DashboardHeader({ filters, onRefresh, refreshing }: Props) {
         <span className="dot" />
         <div>
           <div className="t-name">{me.data?.email ?? 'Cargando…'}</div>
-          <div className="t-city">Tienda Aurora · COL</div>
+          <div className="t-city">Startup Tech· COL</div>
         </div>
         <Icons.chev className="chev" />
       </div>

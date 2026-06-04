@@ -89,7 +89,7 @@ export function ActionCenter({ filters, onToast }: Props) {
       </div>
 
       {tab === 'recs' &&
-        (recs.isLoading ? (
+        (recs.isPending ? (
           <LoadingState />
         ) : recList.length === 0 ? (
           <EmptyMini icon={<Icons.check />} title="Todo bajo control" />
@@ -105,7 +105,7 @@ export function ActionCenter({ filters, onToast }: Props) {
         ))}
 
       {tab === 'tasks' &&
-        (tasks.isLoading ? (
+        (tasks.isPending ? (
           <LoadingState />
         ) : taskList.length === 0 ? (
           <EmptyMini icon={<Icons.bolt />} title="Sin tareas aún" />

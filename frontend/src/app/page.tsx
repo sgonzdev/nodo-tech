@@ -51,9 +51,10 @@ export default function DashboardPage() {
   };
 
   const rows = campaigns.data ?? [];
-  const isLoading = metrics.isLoading || campaigns.isLoading;
+  const firstLoad = metrics.isPending || campaigns.isPending;
   const isError = metrics.isError || campaigns.isError;
-  const isEmpty = !isLoading && !isError && rows.length === 0;
+  const isEmpty = !firstLoad && !isError && rows.length === 0;
+  const refetching = metrics.isFetching || campaigns.isFetching;
 
   return (
     <>
@@ -64,11 +65,18 @@ export default function DashboardPage() {
         filters={<FilterBar filters={filters} campaigns={rows} onChange={patch} />}
         main={
           <>
-            {isLoading && <DashboardSkeleton />}
-            {isError && <ErrorState onRetry={onRefresh} />}
-            {isEmpty && <EmptyState onReset={() => setFilters(DEFAULT_FILTERS)} />}
-            {!isLoading && !isError && !isEmpty && (
-              <>
+            {firstLoad && <DashboardSkeleton />}
+            {!firstLoad && isError && <ErrorState onRetry={onRefresh} />}
+            {!firstLoad && !isError && isEmpty && (
+              <EmptyState onReset={() => setFilters(DEFAULT_FILTERS)} />
+            )}
+            {!firstLoad && !isError && !isEmpty && (
+              <div
+                style={{
+                  opacity: refetching ? 0.6 : 1,
+                  transition: 'opacity 0.18s ease',
+                }}
+              >
                 <div className="eyebrow" style={{ marginBottom: 14 }}>
                   Métricas core · ventana {filters.windowDays}d
                 </div>
@@ -97,7 +105,7 @@ export default function DashboardPage() {
                     setDrill({ row: rows[index], index });
                   }}
                 />
-              </>
+              </div>
             )}
           </>
         }
