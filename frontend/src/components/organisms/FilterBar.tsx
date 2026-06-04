@@ -18,14 +18,22 @@ const MODELS: { id: AttributionModel; label: string }[] = [
 ];
 const ORIGINS = [
   { id: '', label: 'Todos' },
-  { id: 'fria', label: 'fría' },
-  { id: 'warm', label: 'warm' },
-  { id: 'base_propia', label: 'base_propia' },
+  { id: 'fria', label: 'Fría' },
+  { id: 'warm', label: 'Warm' },
+  { id: 'base_propia', label: 'Base propia' },
 ];
 
 export function FilterBar({ filters, campaigns, onChange }: Props) {
+  const [advanced, setAdvanced] = useState(false);
+  const hasAdvanced =
+    filters.model !== 'linear' ||
+    filters.windowDays !== 30 ||
+    !!filters.audienceOrigin;
+
   return (
     <div className="fbar">
+      <CommandBar onApply={onChange} />
+
       <div className="fgroup">
         <span className="flabel">Campaña</span>
         <div className="sel-wrap">
@@ -45,55 +53,61 @@ export function FilterBar({ filters, campaigns, onChange }: Props) {
         </div>
       </div>
 
-      <div className="fgroup">
-        <span className="flabel">Origen</span>
-        {ORIGINS.map((o) => (
-          <button
-            key={o.id}
-            className={'chip' + ((filters.audienceOrigin ?? '') === o.id ? ' on' : '')}
-            onClick={() =>
-              onChange({
-                audienceOrigin: (o.id || undefined) as DashboardFilters['audienceOrigin'],
-              })
-            }
-          >
-            {o.id && <span className="cdot" />}
-            {o.label}
-          </button>
-        ))}
-      </div>
-
-      <div className="fgroup">
-        <span className="flabel">Atribución</span>
-        <div className="seg accent">
-          {MODELS.map((m) => (
-            <button
-              key={m.id}
-              className={filters.model === m.id ? 'on' : ''}
-              onClick={() => onChange({ model: m.id })}
-            >
-              {m.label}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      <div className="fgroup">
-        <span className="flabel">Ventana</span>
-        <input
-          className="win-input num"
-          type="number"
-          min={1}
-          max={365}
-          value={filters.windowDays}
-          onChange={(e) => onChange({ windowDays: Number(e.target.value) || 30 })}
-        />
-        <span className="cmd-hint">días</span>
-      </div>
-
       <div className="fbar-spacer" />
 
-      <CommandBar onApply={onChange} />
+      <button
+        className={'btn' + (advanced || hasAdvanced ? ' btn-active' : '')}
+        onClick={() => setAdvanced((a) => !a)}
+      >
+        🎛️ Filtros
+        {hasAdvanced && <span className="adv-dot" />}
+      </button>
+
+      {advanced && (
+        <div className="adv-panel">
+          <div className="fgroup">
+            <span className="flabel">Origen de público</span>
+            {ORIGINS.map((o) => (
+              <button
+                key={o.id}
+                className={'chip' + ((filters.audienceOrigin ?? '') === o.id ? ' on' : '')}
+                onClick={() =>
+                  onChange({
+                    audienceOrigin: (o.id || undefined) as DashboardFilters['audienceOrigin'],
+                  })
+                }
+              >
+                {o.label}
+              </button>
+            ))}
+          </div>
+          <div className="fgroup">
+            <span className="flabel">Cómo se reparte el crédito</span>
+            <div className="seg accent">
+              {MODELS.map((m) => (
+                <button
+                  key={m.id}
+                  className={filters.model === m.id ? 'on' : ''}
+                  onClick={() => onChange({ model: m.id })}
+                >
+                  {m.label}
+                </button>
+              ))}
+            </div>
+          </div>
+          <div className="fgroup">
+            <span className="flabel">Días a considerar</span>
+            <input
+              className="win-input num"
+              type="number"
+              min={1}
+              max={365}
+              value={filters.windowDays}
+              onChange={(e) => onChange({ windowDays: Number(e.target.value) || 30 })}
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -116,7 +130,7 @@ function CommandBar({
       <Icons.search />
       <input
         value={text}
-        placeholder="Pregúntale al dashboard… ej. “base propia últimos 30 días time-decay”"
+        placeholder="Pregúntale al panel… ej. “base propia últimos 30 días”"
         onChange={(e) => setText(e.target.value)}
         onKeyDown={(e) => e.key === 'Enter' && submit()}
       />
