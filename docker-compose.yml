@@ -1,0 +1,18 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: nodotech_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: nodotech
+      POSTGRES_PASSWORD: nodotech
+      POSTGRES_DB: nodotech_marketing
+    ports:
+      - "${DB_PORT:-5439}:5432"
+    volumes:
+      - ./.pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U nodotech -d nodotech_marketing"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
