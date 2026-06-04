@@ -6,7 +6,7 @@ ROAS de plataforma (píxel)** y un **Action Center** que convierte recomendacion
 derivadas del dato en tasks accionables.
 
 **Stack:** NestJS + PostgreSQL (TypeORM, migrations) · Next.js (App Router) + React +
-React Query + Recharts.
+React Query + Chart.js.
 
 ---
 
@@ -57,7 +57,7 @@ PORT=3002 npm run dev      # App en http://localhost:3002
 
 ```bash
 npm test                 # 45 tests unitarios (atribución, reportes, reglas, edge cases)
-npm run test:e2e         # 43 tests e2e (auth, reportes, action-center, multi-tenant, paginación, casos límite)
+npm run test:e2e         # 45 tests e2e (auth, reportes, action-center, multi-tenant, export PDF/CSV, paginación, casos límite)
 npm run migration:run    # aplica migrations
 npm run seed             # recarga datos sintéticos + usuario demo
 npm run build            # compila
@@ -65,7 +65,7 @@ npm run build            # compila
 
 > Los tests e2e levantan la app real contra Postgres y crean sus propias bases de datos
 > de test (`nodotech_test_*`) automáticamente; solo requieren que el contenedor de Postgres
-> esté arriba (`docker compose up -d`).
+> esté arriba (`docker compose up -d postgres`).
 
 ---
 
@@ -128,15 +128,27 @@ dueño, fecha sugerida, contexto y CTA), se puede completar o descartar.
   drill-down), con `page`/`limit` validados en el servidor.
 - **Stack dockerizado completo**: `docker compose up` levanta DB + backend + frontend con
   migrations y seed automáticos.
-- **88 tests** (45 unitarios + 43 e2e con supertest, incluyendo casos límite hostiles).
+- **90 tests** (45 unitarios + 45 e2e con supertest, incluyendo casos límite hostiles).
+
+### Frontend: diseño orientado al usuario
+
+Layout **modular** con navegación lateral por secciones (Resumen · Reconciliación ·
+Campañas · Acciones) en vez de un scroll único, pensado para que alguien que no domina
+marketing lo entienda: **lenguaje humano** ("Retorno real" en vez de ROAS, estados
+"Gana / Pierde dinero"), filtros técnicos ocultos tras un botón, y gráficas claras
+(dona, barras) con Chart.js. Dark theme alineado a la identidad del resumen ejecutivo.
 
 ## Estructura
 
 ```
-backend/   NestJS · src/{auth,reports,action-center,attribution,seed,...}
-frontend/  Next.js · src/{app,components,lib,providers}
+backend/   NestJS · src/{auth,reports,action-center,attribution,domain,seed,common,config}
+frontend/  Next.js · src/{app,components,lib,providers,styles}  ·  Atomic Design
 docker-compose.yml
 ```
+
+> **Frontend** sigue Atomic Design: `components/{atoms,molecules,organisms}`. El sistema de
+> diseño vive en `src/styles/*.css` como variables CSS (colores, fuentes, radios, espacios).
+> **Backend**: entidades en `domain/entities`, y cada módulo con `controllers/services/dto/tests`.
 
 ## Variables de entorno
 
