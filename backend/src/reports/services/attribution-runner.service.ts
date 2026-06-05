@@ -7,8 +7,7 @@ import { attribute, buildPath } from '../../attribution/utils/attribution';
 import { PathTouchpoint } from '../../attribution/types/attribution.types';
 import { ReportQueryDto } from '../dto/report-query.dto';
 import { AttributedCredit } from '../types/reports.types';
-
-const HALF_LIFE_DAYS = 7;
+import { DEFAULT_HALF_LIFE_DAYS } from '../../domain/constants';
 
 @Injectable()
 export class AttributionRunnerService {
@@ -37,7 +36,7 @@ export class AttributionRunnerService {
       );
       const credited = attribute(query.model, path, Number(sale.amount), {
         saleOccurredAt: sale.occurredAt,
-        halfLifeDays: HALF_LIFE_DAYS,
+        halfLifeDays: DEFAULT_HALF_LIFE_DAYS,
       });
       for (const tp of credited) {
         credits.push({

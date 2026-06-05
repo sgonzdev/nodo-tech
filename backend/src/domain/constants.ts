@@ -1,0 +1,8 @@
+export const MS_PER_DAY = 1000 * 60 * 60 * 24;
+
+export const DEFAULT_HALF_LIFE_DAYS = 7;
+export const DEFAULT_ATTRIBUTION_WINDOW_DAYS = 30;
+export const MAX_ATTRIBUTION_WINDOW_DAYS = 365;
+
+export const RECONCILIATION_THRESHOLD_PCT = 5;
+export const DEFAULT_TASK_DUE_DAYS = 7;

@@ -9,8 +9,7 @@ import { CreateTaskDto, UpdateTaskDto } from '../dto/task.dto';
 import { runRules } from '../rules';
 import { Recommendation } from '../types/recommendation.types';
 import { paginate, PaginationDto } from '../../common/dto/pagination.dto';
-
-const DEFAULT_DUE_DAYS = 7;
+import { DEFAULT_TASK_DUE_DAYS, MS_PER_DAY } from '../../domain/constants';
 
 @Injectable()
 export class ActionCenterService {
@@ -72,7 +71,7 @@ export class ActionCenterService {
 
     const suggestedDate =
       dto.suggestedDate ??
-      new Date(now.getTime() + DEFAULT_DUE_DAYS * 86_400_000)
+      new Date(now.getTime() + DEFAULT_TASK_DUE_DAYS * MS_PER_DAY)
         .toISOString()
         .slice(0, 10);
     return this.tasks.save(

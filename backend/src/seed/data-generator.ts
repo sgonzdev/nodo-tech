@@ -1,5 +1,6 @@
 import { randomUUID } from 'crypto';
 import { Channel } from '../domain/enums';
+import { MS_PER_DAY as DAY } from '../domain/constants';
 import { Rng } from './rng';
 import {
   CAMPAIGN_SPECS,
@@ -8,7 +9,6 @@ import {
   TARGET_SALES,
 } from './seed.config';
 
-const DAY = 86_400_000;
 const ORGANIC_TOUCH_RATE = 0.25;
 
 export interface GeneratedData {

@@ -9,6 +9,10 @@ import {
   Min,
 } from 'class-validator';
 import { AttributionModel, AudienceOrigin } from '../../domain/enums';
+import {
+  DEFAULT_ATTRIBUTION_WINDOW_DAYS,
+  MAX_ATTRIBUTION_WINDOW_DAYS,
+} from '../../domain/constants';
 
 export enum ExportFormat {
   CSV = 'csv',
@@ -42,8 +46,8 @@ export class ReportQueryDto {
   @Type(() => Number)
   @IsInt()
   @Min(1)
-  @Max(365)
-  windowDays = 30;
+  @Max(MAX_ATTRIBUTION_WINDOW_DAYS)
+  windowDays = DEFAULT_ATTRIBUTION_WINDOW_DAYS;
 
   @IsOptional()
   @IsEnum(ExportFormat)

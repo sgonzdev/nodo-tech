@@ -1,7 +1,6 @@
 import { AttributionFn } from '../types/attribution.types';
 import { distributeByWeights } from '../utils/credit.util';
-
-const MS_PER_DAY = 1000 * 60 * 60 * 24;
+import { MS_PER_DAY } from '../../domain/constants';
 
 export const timeDecay: AttributionFn = (path, saleAmount, context) => {
   const halfLife = context.halfLifeDays > 0 ? context.halfLifeDays : 1;

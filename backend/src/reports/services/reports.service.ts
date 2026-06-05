@@ -11,8 +11,7 @@ import {
   CoreMetrics,
 } from '../types/reports.types';
 import { roas, diffPct, sumCredits } from '../utils/reports.math';
-
-const RECONCILIATION_THRESHOLD = 5;
+import { RECONCILIATION_THRESHOLD_PCT } from '../../domain/constants';
 
 @Injectable()
 export class ReportsService {
@@ -90,7 +89,7 @@ export class ReportsService {
         platformRevenue,
         platformRoas,
         reconciliationDiffPct,
-        flagged: Math.abs(reconciliationDiffPct) > RECONCILIATION_THRESHOLD,
+        flagged: Math.abs(reconciliationDiffPct) > RECONCILIATION_THRESHOLD_PCT,
       };
     });
   }

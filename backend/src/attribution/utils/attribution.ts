@@ -7,11 +7,13 @@ import {
 import { linear } from '../models/linear';
 import { timeDecay } from '../models/time-decay';
 import { positionBased } from '../models/position-based';
+import {
+  DEFAULT_ATTRIBUTION_WINDOW_DAYS,
+  DEFAULT_HALF_LIFE_DAYS,
+  MS_PER_DAY,
+} from '../../domain/constants';
 
-export const DEFAULT_HALF_LIFE_DAYS = 7;
-export const DEFAULT_ATTRIBUTION_WINDOW_DAYS = 30;
-
-const MS_PER_DAY = 1000 * 60 * 60 * 24;
+export { DEFAULT_HALF_LIFE_DAYS, DEFAULT_ATTRIBUTION_WINDOW_DAYS };
 
 const MODELS = {
   [AttributionModel.LINEAR]: linear,
