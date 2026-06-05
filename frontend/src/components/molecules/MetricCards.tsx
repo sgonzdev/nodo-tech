@@ -1,9 +1,14 @@
+'use client';
+
+import { Emoji } from 'react-apple-emojis';
 import { CoreMetrics } from '@/lib/types';
 import { formatCop, formatNumber, formatRoas } from '@/lib/format';
 
 interface Props {
   metrics: CoreMetrics;
 }
+
+const EMOJI_SIZE = 22;
 
 export function MetricCards({ metrics }: Props) {
   const realTone = metrics.realRoas >= 1 ? 'good' : 'alert';
@@ -13,6 +18,7 @@ export function MetricCards({ metrics }: Props) {
     <div className="metrics">
       <div className="metric">
         <div className="m-top">
+          <Emoji name="money-with-wings" width={EMOJI_SIZE} />
           <span className="m-label">Lo que invertiste</span>
         </div>
         <div className="m-value num">{formatCop(metrics.totalSpend)}</div>
@@ -21,6 +27,7 @@ export function MetricCards({ metrics }: Props) {
 
       <div className="metric">
         <div className="m-top">
+          <Emoji name="money-bag" width={EMOJI_SIZE} />
           <span className="m-label">Lo que vendiste de verdad</span>
         </div>
         <div className="m-value num">{formatCop(metrics.realRevenue)}</div>
@@ -29,6 +36,7 @@ export function MetricCards({ metrics }: Props) {
 
       <div className={`metric ${realTone} hl`}>
         <div className="m-top">
+          <Emoji name="chart-increasing" width={EMOJI_SIZE} />
           <span className="m-label">Retorno real</span>
         </div>
         <div className="m-value num">{formatRoas(metrics.realRoas)}</div>
@@ -39,6 +47,7 @@ export function MetricCards({ metrics }: Props) {
 
       <div className="metric">
         <div className="m-top">
+          <Emoji name="shopping-cart" width={EMOJI_SIZE} />
           <span className="m-label">Ventas logradas</span>
         </div>
         <div className="m-value num">{formatNumber(metrics.conversions)}</div>

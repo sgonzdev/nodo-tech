@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Spectral, Hanken_Grotesk, IBM_Plex_Mono } from 'next/font/google';
 import './globals.css';
 import { QueryProvider } from '@/providers/query-provider';
+import { EmojiProvider } from '@/providers/emoji-provider';
 
 const serif = Spectral({
   subsets: ['latin'],
@@ -39,7 +40,9 @@ export default function RootLayout({
       className={`${serif.variable} ${sans.variable} ${mono.variable}`}
     >
       <body>
-        <QueryProvider>{children}</QueryProvider>
+        <QueryProvider>
+          <EmojiProvider>{children}</EmojiProvider>
+        </QueryProvider>
       </body>
     </html>
   );

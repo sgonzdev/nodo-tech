@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { AttributionModel, CampaignRow, DashboardFilters } from '@/lib/types';
 import { parseConversational } from '@/lib/conversational';
+import { Emoji } from 'react-apple-emojis';
 import { Icons } from '@/components/atoms/Icons';
 
 interface Props {
@@ -59,7 +60,8 @@ export function FilterBar({ filters, campaigns, onChange }: Props) {
         className={'btn' + (advanced || hasAdvanced ? ' btn-active' : '')}
         onClick={() => setAdvanced((a) => !a)}
       >
-        🎛️ Filtros
+        <Emoji name="control-knobs" width={16} />
+        Filtros
         {hasAdvanced && <span className="adv-dot" />}
       </button>
 

@@ -10,6 +10,7 @@ import {
   Tooltip,
   Legend,
 } from 'chart.js';
+import { Emoji } from 'react-apple-emojis';
 import { CampaignRow } from '@/lib/types';
 import { formatCop, formatRoas } from '@/lib/format';
 import { campaignColor, shortName } from '@/lib/campaign-color';
@@ -53,7 +54,10 @@ export function SourceDonut({ rows }: { rows: CampaignRow[] }) {
     <div className="card">
       <div className="chart-head">
         <div>
-          <div className="card-title">¿De dónde vienen tus ventas?</div>
+          <div className="card-title">
+            <Emoji name="compass" width={18} />
+            ¿De dónde vienen tus ventas?
+          </div>
           <div className="card-sub">Parte de las ventas reales que aportó cada campaña</div>
         </div>
       </div>
@@ -100,7 +104,10 @@ export function RevenueBars({ rows }: { rows: CampaignRow[] }) {
     <div className="card">
       <div className="chart-head">
         <div>
-          <div className="card-title">¿Cuánto vendió cada campaña?</div>
+          <div className="card-title">
+            <Emoji name="bar-chart" width={18} />
+            ¿Cuánto vendió cada campaña?
+          </div>
           <div className="card-sub">Ventas confirmadas en caja, no estimaciones</div>
         </div>
       </div>
@@ -162,7 +169,10 @@ export function RoasBars({ rows }: { rows: CampaignRow[] }) {
     <div className="card">
       <div className="chart-head">
         <div>
-          <div className="card-title">Retorno real vs lo que dice Meta</div>
+          <div className="card-title">
+            <Emoji name="balance-scale" width={18} />
+            Retorno real vs lo que dice Meta
+          </div>
           <div className="card-sub">La barra verde es lo que de verdad entró en caja</div>
         </div>
       </div>

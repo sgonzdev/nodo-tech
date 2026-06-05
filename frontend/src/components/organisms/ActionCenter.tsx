@@ -4,6 +4,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import { actionCenterApi } from '@/lib/queries';
 import { DashboardFilters, Recommendation, Task } from '@/lib/types';
+import { Emoji } from 'react-apple-emojis';
 import { Icons } from '@/components/atoms/Icons';
 import { Pager } from '@/components/atoms/Pager';
 import { LoadingState } from '@/components/molecules/States';
@@ -72,7 +73,7 @@ export function ActionCenter({ filters, grid, onToast }: Props) {
     <div className="rail-inner">
       <div className="rail-head">
         <div className="rail-title">
-          <span className="spark" />
+          <Emoji name="light-bulb" width={18} />
           Action Center
         </div>
       </div>
