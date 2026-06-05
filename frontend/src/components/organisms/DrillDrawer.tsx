@@ -119,6 +119,13 @@ export function DrillDrawer({ campaign, index, onClose }: Props) {
                   </div>
                 </div>
               ))}
+              {touch && (
+                <Pager
+                  page={touch.page}
+                  totalPages={touch.totalPages}
+                  onChange={setPage}
+                />
+              )}
             </>
           )}
         </div>
