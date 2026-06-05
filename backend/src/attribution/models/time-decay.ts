@@ -8,6 +8,7 @@ export const timeDecay: AttributionFn = (path, saleAmount, context) => {
   const weights = path.map((tp) => {
     const daysBefore =
       (context.saleOccurredAt.getTime() - tp.occurredAt.getTime()) / MS_PER_DAY;
+    //decaimiento exponencial
     return Math.pow(2, -daysBefore / halfLife);
   });
 

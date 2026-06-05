@@ -3,9 +3,12 @@ import {
   CreateDateColumn,
   Entity,
   Index,
+  JoinColumn,
+  ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { TaskStatus } from '../enums';
+import { Business } from './business.entity';
 
 @Entity('task')
 export class Task {
@@ -15,6 +18,10 @@ export class Task {
   @Index()
   @Column({ name: 'business_id', type: 'uuid' })
   businessId: string;
+
+  @ManyToOne(() => Business, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'business_id' })
+  business: Business;
 
   @Column()
   title: string;

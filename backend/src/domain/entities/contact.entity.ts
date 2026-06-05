@@ -1,4 +1,12 @@
-import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  Index,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { Business } from './business.entity';
 
 @Entity('contact')
 @Index(['businessId', 'externalId'], { unique: true })
@@ -9,6 +17,10 @@ export class Contact {
   @Index()
   @Column({ name: 'business_id', type: 'uuid' })
   businessId: string;
+
+  @ManyToOne(() => Business, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'business_id' })
+  business: Business;
 
   @Column({ name: 'external_id' })
   externalId: string;

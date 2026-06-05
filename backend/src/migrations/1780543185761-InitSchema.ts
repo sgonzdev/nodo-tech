@@ -68,9 +68,57 @@ export class InitSchema1780543185761 implements MigrationInterface {
     await queryRunner.query(
       `ALTER TABLE "user" ADD CONSTRAINT "FK_5a4bd96d9a519d4d20a21231b9f" FOREIGN KEY ("business_id") REFERENCES "business"("id") ON DELETE CASCADE ON UPDATE NO ACTION`,
     );
+    await queryRunner.query(
+      `ALTER TABLE "contact" ADD CONSTRAINT "FK_contact_business" FOREIGN KEY ("business_id") REFERENCES "business"("id") ON DELETE CASCADE ON UPDATE NO ACTION`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "campaign" ADD CONSTRAINT "FK_campaign_business" FOREIGN KEY ("business_id") REFERENCES "business"("id") ON DELETE CASCADE ON UPDATE NO ACTION`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "touchpoint" ADD CONSTRAINT "FK_touchpoint_business" FOREIGN KEY ("business_id") REFERENCES "business"("id") ON DELETE CASCADE ON UPDATE NO ACTION`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "touchpoint" ADD CONSTRAINT "FK_touchpoint_contact" FOREIGN KEY ("contact_id") REFERENCES "contact"("id") ON DELETE CASCADE ON UPDATE NO ACTION`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "touchpoint" ADD CONSTRAINT "FK_touchpoint_campaign" FOREIGN KEY ("campaign_id") REFERENCES "campaign"("id") ON DELETE CASCADE ON UPDATE NO ACTION`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "sale" ADD CONSTRAINT "FK_sale_business" FOREIGN KEY ("business_id") REFERENCES "business"("id") ON DELETE CASCADE ON UPDATE NO ACTION`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "sale" ADD CONSTRAINT "FK_sale_contact" FOREIGN KEY ("contact_id") REFERENCES "contact"("id") ON DELETE CASCADE ON UPDATE NO ACTION`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "task" ADD CONSTRAINT "FK_task_business" FOREIGN KEY ("business_id") REFERENCES "business"("id") ON DELETE CASCADE ON UPDATE NO ACTION`,
+    );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
+    await queryRunner.query(
+      `ALTER TABLE "task" DROP CONSTRAINT "FK_task_business"`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "sale" DROP CONSTRAINT "FK_sale_contact"`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "sale" DROP CONSTRAINT "FK_sale_business"`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "touchpoint" DROP CONSTRAINT "FK_touchpoint_campaign"`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "touchpoint" DROP CONSTRAINT "FK_touchpoint_contact"`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "touchpoint" DROP CONSTRAINT "FK_touchpoint_business"`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "campaign" DROP CONSTRAINT "FK_campaign_business"`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "contact" DROP CONSTRAINT "FK_contact_business"`,
+    );
     await queryRunner.query(
       `ALTER TABLE "user" DROP CONSTRAINT "FK_5a4bd96d9a519d4d20a21231b9f"`,
     );

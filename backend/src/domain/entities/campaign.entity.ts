@@ -1,5 +1,13 @@
-import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  Index,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { Channel } from '../enums';
+import { Business } from './business.entity';
 
 @Entity('campaign')
 export class Campaign {
@@ -9,6 +17,10 @@ export class Campaign {
   @Index()
   @Column({ name: 'business_id', type: 'uuid' })
   businessId: string;
+
+  @ManyToOne(() => Business, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'business_id' })
+  business: Business;
 
   @Column()
   name: string;
